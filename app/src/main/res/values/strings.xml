@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">음력 달력</string>
+
+    <string name="txt_memo">간단한 메모를 작성해주세요.</string>
+
+    <string name="txt_lunar">음력</string>
+    <string name="txt_solar">양력</string>
+
+    <string name="txt_year">년</string>
+    <string name="txt_month">월</string>
+    <string name="txt_day">일</string>
+
+    <string name="txt_hour">시</string>
+    <string name="txt_minute">분</string>
+
+    <string name="txt_add_date">날짜추가</string>
+    <string name="txt_add_alarm">알람추가</string>
+
+</resources>

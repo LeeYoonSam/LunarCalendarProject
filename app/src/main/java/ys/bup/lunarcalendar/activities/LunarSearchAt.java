@@ -8,21 +8,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.realm.Realm;
 import ys.bup.lunarcalendar.R;
+import ys.bup.lunarcalendar.entity.FavoriteEntity;
 
 
 public class LunarSearchAt  extends BaseLoadingActivity implements OnClickListener {
 
-	Realm realm;
-	
 	@BindView(R.id.tvYear)
 	TextView tvYear;
 
@@ -56,8 +54,6 @@ public class LunarSearchAt  extends BaseLoadingActivity implements OnClickListen
 		setContentView(R.layout.at_lunar_search);
 
 		ButterKnife.bind(this);
-		
-//		realm = RealmController.with(this).getRealm();
 
 		overlayAlarm.setAddAlarmListener(alarmCallback, LunarSearchAt.this);
 		overlayAlarm.setVisibility(View.GONE);
@@ -84,27 +80,31 @@ public class LunarSearchAt  extends BaseLoadingActivity implements OnClickListen
 		}
 	};
 
-	
+    @OnClick(R.id.btAddFavorite)
+    public void addFavorite()
+	{
+		// Persist your data easily
+		realm.beginTransaction();
+		FavoriteEntity tmp = realm.createObject(FavoriteEntity.class);
+		tmp.setYear(tvYear.getText().toString());
+		tmp.setMonth(tvMonth.getText().toString());
+		tmp.setDay(tvDay.getText().toString());
 
-	// Auto Increment
-	private static AtomicInteger id = new AtomicInteger();
-	
-//    @OnClick(R.id.btAddFavorite)
-//    public void addFavorite()
-//    {
-//    	RealmFavoriteObject tmp = new RealmFavoriteObject();
-//    	tmp.setIdx(id.getAndIncrement());
-//    	tmp.setYear(tvYear.getText().toString());
-//    	tmp.setMonth(tvMonth.getText().toString());
-//    	tmp.setDay(tvDay.getText().toString());
-//    	tmp.setHour(saveAlarm.getHour());
-//    	tmp.setMinute(saveAlarm.getMinute());
-//
-//    	// Persist your data easily
-//        realm.beginTransaction();
-//        realm.copyToRealm(tmp);
-//        realm.commitTransaction();
-//    }
+		if(saveAlarm != null)
+		{
+			tmp.setHour(saveAlarm.getHour());
+			tmp.setMinute(saveAlarm.getMinute());
+			tmp.setMemo(saveAlarm.getMemo());
+		}
+
+		tmp.setLunar(isLunar);
+		realm.commitTransaction();
+
+		Toast.makeText(LunarSearchAt.this, "Add Success", Toast.LENGTH_SHORT).show();
+		finish();
+    }
+
+
     
 	@OnClick(R.id.btLunar)
 	public void setLunar()

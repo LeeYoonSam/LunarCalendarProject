@@ -17,7 +17,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ys.bup.lunarcalendar.R;
-import ys.bup.lunarcalendar.activities.FavoriteEntity;
+import ys.bup.lunarcalendar.entity.FavoriteEntity;
 import ys.bup.lunarcalendar.activities.LunarSearchAt;
 
 /**
@@ -92,7 +92,7 @@ public class FavoriteAdapter extends HFRecyclerView<FavoriteEntity> {
             FavoriteEntity item = getItem(position);
 
             itemViewHolder.tvHeaderTitle.setText(item.getMemo());
-            itemViewHolder.tvHeaderDate.setText(item.getConvertDate());
+            itemViewHolder.tvHeaderDate.setText(item.getDisplayDate());
 
         } else if (holder instanceof HeaderViewHolder) {
 

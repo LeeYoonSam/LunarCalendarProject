@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
+import io.realm.Realm;
 import ys.bup.lunarcalendar.network.NetworkUtil;
 
 public class BaseLoadingActivity extends Activity {
@@ -15,6 +16,8 @@ public class BaseLoadingActivity extends Activity {
 	public final static String ACTION_NETWORKCHANGE = "action.network.onchange";
 	
 	ProgressDialog pbLoading = null;
+
+	Realm realm;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +28,10 @@ public class BaseLoadingActivity extends Activity {
 		
 		if(pbLoading == null)
 			createLoading();
+
+		realm = Realm.getDefaultInstance();
 	}
-	
+
 	public void createLoading()
 	{
 		pbLoading = new ProgressDialog(this);
@@ -57,7 +62,8 @@ public class BaseLoadingActivity extends Activity {
 		pbLoading = null;
 		
 		unregisterReceiver(mRecevier);
-		
+		realm.close();
+
 		super.onDestroy();
 	}
 	

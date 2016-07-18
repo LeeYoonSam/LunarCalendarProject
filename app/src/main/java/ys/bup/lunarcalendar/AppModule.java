@@ -46,6 +46,7 @@ http://drcarter.tistory.com/169
 	}
 
 	@Provides
+	@Singleton
 	Context provideApplicationContext() {
 		return application;
 	}

@@ -9,6 +9,7 @@ public class LunarCalendarApplication extends Application {
 
     private ApplicationComponent component;
 
+	@Singleton
 	@Component(modules = AppModule.class)
 	public interface ApplicationComponent {
 		void inject(LunarCalendarApplication application);

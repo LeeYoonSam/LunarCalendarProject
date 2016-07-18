@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,9 @@ public class LunarSearchAt  extends BaseLoadingActivity implements OnClickListen
 
 	@BindView(R.id.tvConvertDate)
 	TextView tvConvertDate;
+
+	@BindView(R.id.btAddFavorite)
+	Button btAddFavorite;
 	
 	@BindView(R.id.overlayAlarm)
 	AlarmAddOverlay overlayAlarm;
@@ -77,12 +81,18 @@ public class LunarSearchAt  extends BaseLoadingActivity implements OnClickListen
 			Log.d("AlarmAddLister", "Memo : " + alarm.memo + " Hour : " + alarm.getHour() + " Minute : " + alarm.getMinute());
 			
 			overlayAlarm.setVisibility(View.GONE);
+
+			btAddFavorite.setVisibility(View.VISIBLE);
 		}
 	};
 
     @OnClick(R.id.btAddFavorite)
     public void addFavorite()
 	{
+		if(!checkInvalid()) {
+			return;
+		}
+
 		// Persist your data easily
 		realm.beginTransaction();
 		FavoriteEntity tmp = realm.createObject(FavoriteEntity.class);
@@ -104,6 +114,21 @@ public class LunarSearchAt  extends BaseLoadingActivity implements OnClickListen
 		finish();
     }
 
+	public boolean checkInvalid()
+	{
+		try {
+			if(tvYear.getText().toString().length() < 1 || tvMonth.getText().toString().length() < 1 || tvDay.getText().toString().length() < 1) {
+				Toast.makeText(LunarSearchAt.this, "검색하고 싶은 날짜를 선택하세요", Toast.LENGTH_SHORT).show();
+				return false;
+			}
+
+			return true;
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
 
     
 	@OnClick(R.id.btLunar)

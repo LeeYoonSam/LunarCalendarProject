@@ -31,6 +31,9 @@ android {
     }
 }
 
+참고사이트
+http://drcarter.tistory.com/169
+
 	 */
 	private final LunarCalendarApplication application;
 

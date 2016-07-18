@@ -2,9 +2,6 @@ package ys.bup.lunarcalendar;
 
 import android.app.Application;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-
 /**
  * Created by ys on 2016. 7. 13..
  */

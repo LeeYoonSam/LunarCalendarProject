@@ -32,6 +32,9 @@ public class LunarMainAt extends BaseLoadingActivity {
         setContentView(R.layout.at_lunar_main);
 
         ButterKnife.bind(this);
+        
+        // Perform injection so that when this call returns all dependencies will be available for use.
+	    ((StudyApplication) getApplication()).getApplicationComponent().inject(this);
 
         adapter = new FavoriteAdapter(alFavorite, LunarMainAt.this);
 

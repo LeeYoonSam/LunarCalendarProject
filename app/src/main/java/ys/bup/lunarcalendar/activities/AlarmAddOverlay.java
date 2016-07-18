@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -69,16 +70,43 @@ public class AlarmAddOverlay extends FrameLayout implements OnClickListener {
 			break;
 
 		case R.id.btAlarmAdd:
-			CommUtils.hideSoftInput(parentAt, etMemo);
-			
+
 			params.setMemo(etMemo.getText().toString());
-			parentListener.clickAdd(params);
+
+			if(checkInvalid()) {
+				parentListener.clickAdd(params);
+				CommUtils.hideSoftInput(parentAt, etMemo);
+			}
+
 			break;
 		default:
 			break;
 		}
 	}
 
+	public boolean checkInvalid()
+	{
+		try {
+			if(params.getMemo() == null || params.getMemo().length() < 1) {
+				Toast.makeText(this.getContext(), "메모를 작성해주세요", Toast.LENGTH_SHORT).show();
+				return false;
+			}
+
+			if(params.getHour() == 999 || params.getMinute() == 999) {
+				Toast.makeText(this.getContext(), "시간을 지정해주세요", Toast.LENGTH_SHORT).show();
+				return false;
+			}
+
+			return true;
+		}
+		catch (Exception e){
+			e.printStackTrace();
+
+			return false;
+		}
+	}
+
+	// 알람 날짜 선택
 	public void callNumberPicker()
 	{
 		// timepicker set Callback

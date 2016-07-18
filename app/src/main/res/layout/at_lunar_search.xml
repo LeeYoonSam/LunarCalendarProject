@@ -98,7 +98,8 @@
             android:id="@+id/btAddFavorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/txt_add_date" />
+            android:text="@string/txt_add_date"
+            android:visibility="gone"/>
         
         <Button
             android:id="@+id/btAddAlarm"

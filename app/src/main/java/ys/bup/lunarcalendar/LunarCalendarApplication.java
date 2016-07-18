@@ -2,6 +2,11 @@ package ys.bup.lunarcalendar;
 
 import android.app.Application;
 
+import javax.inject.Singleton;
+
+import dagger.Component;
+import ys.bup.lunarcalendar.activities.LunarMainAt;
+
 /**
  * Created by ys on 2016. 7. 13..
  */
@@ -25,7 +30,7 @@ public class LunarCalendarApplication extends Application {
 
 	private void initApplicationComponent() {
 		this.component = DaggerLunarCalendarApplication_ApplicationComponent.builder()
-				.applicationModule(new AppModule(this))
+				.appModule(new AppModule(this))
 				.build();
 		
 		component.inject(this);

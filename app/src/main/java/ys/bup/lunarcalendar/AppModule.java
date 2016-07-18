@@ -25,9 +25,9 @@ android {
 }
 
 	 */
-	private final StudyApplication application;
+	private final LunarCalendarApplication application;
 
-	public AppModule(StudyApplication application) {
+	public AppModule(LunarCalendarApplication application) {
 		this.application = application;
 
 		RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(application).deleteRealmIfMigrationNeeded().build();

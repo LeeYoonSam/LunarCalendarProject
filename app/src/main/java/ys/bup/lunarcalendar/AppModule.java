@@ -16,15 +16,20 @@ public class AppModule {
 
 	public AppModule(LunarCalendarApplication application) {
 		this.application = application;
-
-		RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(application).deleteRealmIfMigrationNeeded().build();
-		Realm.setDefaultConfiguration(realmConfiguration);
-
 	}
 
 	@Provides
 	@Singleton
 	Context provideApplicationContext() {
 		return application;
+	}
+	
+	@Provides
+	@Singleton
+	RealmConfiguration providesRealmConfiguration(Application application) {
+		RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(application).deleteRealmIfMigrationNeeded().build();
+		Realm.setDefaultConfiguration(realmConfiguration);
+		
+		return realmConfiguration;
 	}
 }

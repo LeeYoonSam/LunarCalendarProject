@@ -4,6 +4,7 @@ import android.app.Application;
 
 import javax.inject.Singleton;
 
+import io.realm.RealmConfiguration;
 import dagger.Component;
 import ys.bup.lunarcalendar.activities.LunarMainAt;
 
@@ -19,6 +20,8 @@ public class LunarCalendarApplication extends Application {
 	public interface ApplicationComponent {
 		void inject(LunarCalendarApplication application);
 		void inject(LunarMainAt mainActivity);
+		
+		RealmConfiguration realmConfiguration();
 	}
 
 	@Override

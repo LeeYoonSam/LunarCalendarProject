@@ -1,0 +1,457 @@
+// strings.xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">YSRetrofitRxSample</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    
+    <string name="txt_memo">간단한 메모를 작성해주세요.</string>
+    
+    <string name="txt_search_date">날짜 검색하기</string>
+    
+    <string name="txt_year">년</string>
+    <string name="txt_month">월</string>
+    <string name="txt_day">일</string>
+    
+    <string name="txt_hour">시</string>
+    <string name="txt_minute">분</string>
+    
+    <string name="txt_add_date">날짜추가</string>
+    <string name="txt_add_alarm">알람추가</string>
+
+</resources>
+
+
+// at_lunar_sesarch.xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EAEAEA" >
+
+    <Button
+        android:id="@+id/btSearchDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#6799FF"
+        android:layout_margin="10dp"
+        android:text="@string/txt_search_date"
+        android:textColor="#EAEAEA"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/tvConvertDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#6799FF" />
+        
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <Button
+            android:id="@+id/btAddFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_add_date"
+            android:textColor="#EAEAEA"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone"
+            android:layout_weight="1"
+            android:background="#6799FF"
+            android:layout_marginRight="5dp" />
+
+        <Button
+            android:id="@+id/btAddAlarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_add_alarm"
+            android:textColor="#EAEAEA"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:background="#6799FF"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <com.albert.study.lunar.calendar.AlarmAddOverlay
+        android:id="@+id/overlayAlarm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+</RelativeLayout>
+
+
+// CommUtils.java
+package com.albert.study.lunar.calendar;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import android.app.Activity;
+import android.content.Context;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
+import com.ibm.icu.util.ChineseCalendar;
+
+public class CommUtils {
+
+	public static int 	displayWidth;
+	public static int 	displayHeight;
+	public static int 	displayDpi;
+	public static float displayScale;
+
+	public static final SimpleDateFormat mReceiveFormat = new SimpleDateFormat ( "yyyyMMdd");
+	public static final SimpleDateFormat mShowFormat = new SimpleDateFormat ( "yyyy. MM. dd");
+
+	public static class LunarSolarEntity {
+		
+		String lunarDate;
+		String solarDate;
+		String convertDate;
+		
+		public String getLunarDate() {
+			return lunarDate;
+		}
+		public void setLunarDate(String lunarDate) {
+			this.lunarDate = lunarDate;
+		}
+		public String getSolarDate() {
+			return solarDate;
+		}
+		public void setSolarDate(String solarDate) {
+			this.solarDate = solarDate;
+		}
+		public String getConvertDate() {
+			return convertDate;
+		}
+		public void setConvertDate(String convertDate) {
+			this.convertDate = convertDate;
+		}
+	}
+	
+	
+	public static String getDateByShowForamt(Date date) {
+		return mShowFormat.format(date);
+	}
+
+	public static String getShowFormat(String strDate)
+	{
+		try {
+			Date date = mReceiveFormat.parse(strDate);
+			return getDateByShowForamt(date);	
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+
+			return "";
+		}
+	}
+
+	/**
+	 * 음력날짜를 양력날짜로 변환
+	 * @param 음력날짜 (yyyyMMdd)
+	 * @return 양력날짜 (yyyyMMdd)
+	 */
+	public static String convertLunarToSolar(String date) {
+		ChineseCalendar cc = new ChineseCalendar();
+		Calendar cal = Calendar.getInstance();
+
+		cc.set(ChineseCalendar.EXTENDED_YEAR, Integer.parseInt(date.substring(0, 4)) + 2637);
+		cc.set(ChineseCalendar.MONTH, Integer.parseInt(date.substring(4, 6)) - 1);
+		cc.set(ChineseCalendar.DAY_OF_MONTH, Integer.parseInt(date.substring(6)));
+
+		cal.setTimeInMillis(cc.getTimeInMillis());
+		return getDateByShowForamt(cal.getTime());
+	}
+
+	/**
+	 * 양력날짜를 음력날짜로 변환
+	 * @param 양력날짜 (yyyyMMdd)
+	 * @return 음력날짜 (yyyyMMdd)
+	 */
+	public static LunarSolarEntity converSolarToLunar(String date) {
+		
+		LunarSolarEntity tmpResult = new LunarSolarEntity();
+		tmpResult.setSolarDate(date);
+		
+		ChineseCalendar cc = new ChineseCalendar();
+		Calendar cal = Calendar.getInstance();
+
+		cal.set(Calendar.YEAR, Integer.parseInt(date.substring(0, 4)));
+		cal.set(Calendar.MONTH, Integer.parseInt(date.substring(4, 6)) - 1);
+		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date.substring(6)));
+
+		cc.setTimeInMillis(cal.getTimeInMillis());
+
+		int y = cc.get(ChineseCalendar.EXTENDED_YEAR) - 2637;
+		int m = cc.get(ChineseCalendar.MONTH) + 1;
+		int d = cc.get(ChineseCalendar.DAY_OF_MONTH);
+
+		StringBuffer ret = new StringBuffer();
+		ret.append(String.format("%04d", y)).append("-");
+		ret.append(String.format("%02d", m)).append("-");
+		ret.append(String.format("%02d", d));
+
+		tmpResult.setConvertDate(ret.toString());
+		tmpResult.setLunarDate(ret.replace(0, ret.length(), "-").toString());
+		
+		return tmpResult;
+	}
+
+	public static int getDivision(float value)
+	{
+		//		LogUtil.Logd("getDivision Size", "value = " + (int)(value * (displayHeight / 1280.0f)));
+		return (int)(value * (displayHeight / 1280.0f));
+	}
+
+	public static float getDivisionFloat(float value)
+	{
+		//		LogUtil.Logd("getDivision Size", "value = " + (int)(value * (displayHeight / 1280.0f)));
+		return value * (displayHeight / 1280.0f);
+	}
+
+	public static void hideSoftInput(Activity activity, View view) {
+		view.requestFocus();
+		InputMethodManager inputManager = (InputMethodManager) activity
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+	}
+
+	public static void showSoftInput(Activity activity, View view) {
+		view.requestFocus();
+		InputMethodManager inputManager = (InputMethodManager) activity
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputManager.showSoftInput(view, 0);
+	}
+}
+
+
+
+// FavoriteEntity.java
+public class FavoriteEntity {
+
+	private String memo;
+	private String solarDate;
+	private String lunarDate;
+	
+	private boolean isAlarmOn;
+	
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+	public String getSolarDate() {
+		return solarDate;
+	}
+	public void setSolarDate(String solarDate) {
+		this.solarDate = solarDate;
+	}
+	public String getLunarDate() {
+		return lunarDate;
+	}
+	public void setLunarDate(String lunarDate) {
+		this.lunarDate = lunarDate;
+	}
+	public boolean isAlarmOn() {
+		return isAlarmOn;
+	}
+	public void setAlarmOn(boolean isAlarmOn) {
+		this.isAlarmOn = isAlarmOn;
+	}
+	
+	public String showLunarDate() {
+		return CommUtils.getShowFormat(this.lunarDate);
+	}
+
+	public String showSolarDate() {
+		return CommUtils.getShowFormat(this.solarDate);
+	}
+
+}
+
+
+// LunarSearchAt.java
+public class LunarSearchAt  extends BaseLoadingActivity {
+
+//	Realm realm;
+	
+	@Nullable @Bind(R.id.btSearchDate)
+	Button btSearchDate;
+
+	@Nullable @Bind(R.id.btAddFavorite)
+	TextView btAddFavorite;
+
+	@Nullable @Bind(R.id.tvConvertDate)
+	TextView tvConvertDate;
+	
+	@Nullable @Bind(R.id.overlayAlarm)
+	AlarmAddOverlay overlayAlarm;
+
+	AlarmObject saveAlarm;
+	
+	String selectDate = "";
+	LunarSolarEntity tmpDate;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.at_lunar_search);
+
+		ButterKnife.bind(this);
+		
+//		realm = RealmController.with(this).getRealm();;
+
+		overlayAlarm.setAddAlarmListener(alarmCallback, LunarSearchAt.this);
+		overlayAlarm.setVisibility(View.GONE);
+	}
+
+	AlarmAddListener alarmCallback = new AlarmAddListener() {
+
+		@Override
+		public void clickAdd(AlarmObject alarm) {
+
+			saveAlarm = alarm;
+			Log.d("AlarmAddLister", "Memo : " + alarm.memo + " Hour : " + alarm.getHour() + " Minute : " + alarm.getMinute());
+			
+			overlayAlarm.setVisibility(View.GONE);
+			
+			try
+			{
+				if(alarm.memo != null && alarm.getHour() != 999 && alarm.getMinute() != 999)
+					btAddFavorite.setVisibility(View.VISIBLE);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				return;
+			}
+		}
+	};
+
+	
+
+	// Auto Increment
+	private static AtomicInteger id = new AtomicInteger();
+	
+    @Nullable @OnClick(R.id.btAddFavorite)
+    public void addFavorite()
+    {
+//    	FavoriteEntity tmp = new FavoriteEntity();
+//    	tmp.setIdx(id.getAndIncrement());
+//    	tmp.setYear(tvYear.getText().toString());
+//    	tmp.setMonth(tvMonth.getText().toString());
+//    	tmp.setDay(tvDay.getText().toString());
+//    	tmp.setHour(saveAlarm.getHour());
+//    	tmp.setMinute(saveAlarm.getMinute());
+//    	
+//    	// Persist your data easily
+//        realm.beginTransaction();
+//        realm.copyToRealm(tmp);
+//        realm.commitTransaction();
+    	
+    	FavoriteEntity tmp = new FavoriteEntity();
+    	if(saveAlarm != null)
+    	{
+    		tmp.setMemo(saveAlarm.getMemo());
+        	tmp.setAlarmOn(false);	
+    	}
+    	
+    	tmp.setLunarDate(tmpDate.getLunarDate());
+    	tmp.setSolarDate(tmpDate.getSolarDate());
+    	
+    	// add 작업
+    }
+
+	@Nullable @OnClick(R.id.btAddAlarm)
+	public void showAddAlarmOverlay()
+	{
+		overlayAlarm.setVisibility(View.VISIBLE);
+	}
+
+	@Nullable @OnClick(R.id.btSearchDate)
+	public void searchDate() {
+		DialogDatePicker();
+	}
+	
+	// 데이터 피커 다이얼로그
+	public void DialogDatePicker(){
+		
+		DatePickerDialog.OnDateSetListener mDateSetListener =
+				new DatePickerDialog.OnDateSetListener() {
+			// onDateSet method
+			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+				int month = monthOfYear+1;
+				int day = dayOfMonth;
+				
+				String sMonth = "";
+				String sDay = "";
+				
+				if(month < 10)
+					sMonth = "0" + String.valueOf(month);
+				else
+					sMonth = String.valueOf(month);
+				
+				if(day < 10)
+					sDay = "0" + String.valueOf(day);
+				else
+					sDay = String.valueOf(day);
+				
+				selectDate = String.valueOf(year) + sMonth + sDay;
+				
+				Log.d("DatePicker", "DATE : " + selectDate);
+				
+				tmpDate = CommUtils.converSolarToLunar(selectDate);
+				tvConvertDate.setText("음력 " + tmpDate.getConvertDate());
+				
+				btSearchDate.setText(CommUtils.getShowFormat(selectDate));
+			}
+		};
+
+		int cyear;
+		int cmonth;
+		int cday;
+		
+		if(selectDate.length() >= 6)
+		{
+			cyear = Integer.parseInt(selectDate.substring(0, 4));
+			cmonth = Integer.parseInt(selectDate.substring(4, 6)) - 1;
+			cday =Integer.parseInt( selectDate.substring(6));
+		}
+		else
+		{
+			Calendar c = Calendar.getInstance();
+			
+			cyear = c.get(Calendar.YEAR);
+			cmonth = c.get(Calendar.MONTH);
+			cday = c.get(Calendar.DAY_OF_MONTH);
+		}
+		
+		DatePickerDialog alert = new DatePickerDialog(LunarSearchAt.this,  mDateSetListener, cyear, cmonth, cday);
+
+		// 날짜제한 - 오늘 날짜 이상은 선택이 안되게
+//		alert.getDatePicker().setMaxDate(new Date().getTime());
+		alert.show();
+	}
+
+}

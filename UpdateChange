@@ -52,8 +52,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:layout_below="@id/btSearchDate" >
+        android:layout_below="@id/btSearchDate"
+        android:fillViewport="true" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -120,16 +120,17 @@
                         android:textColor="#EAEAEA" />
                 </LinearLayout>
             </LinearLayout>
-
-            <com.albert.study.lunar.calendar.AlarmAddOverlay
-                android:id="@+id/overlayAlarm"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
         </RelativeLayout>
     </ScrollView>
 
+    <com.albert.study.lunar.calendar.AlarmAddOverlay
+        android:id="@+id/overlayAlarm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
 </RelativeLayout>
+
 
 
 
@@ -620,24 +621,20 @@ public class FavoriteEntity {
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#4c000000" />
-    
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp" >
-        
-        <LinearLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp"
         android:background="#fff"
         android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:padding="10dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="51dp"
-            android:layout_below="@id/llTop"
             android:layout_marginTop="10dp"
             android:orientation="vertical" >
 
@@ -650,18 +647,24 @@ public class FavoriteEntity {
                     android:id="@+id/tvHour"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:gravity="center"
                     android:hint="@string/txt_hour" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
+                    android:gravity="center"
+                    android:text=":" />
 
                 <TextView
                     android:id="@+id/tvMinute"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:gravity="center"
                     android:hint="@string/txt_minute" />
-
             </LinearLayout>
 
             <View
@@ -669,22 +672,20 @@ public class FavoriteEntity {
                 android:layout_height="1dp"
                 android:background="#4C257F" />
         </LinearLayout>
-        
+
         <Button
             android:id="@+id/btAlarmAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/txt_add_alarm"
             android:layout_marginTop="10dp"
             android:background="#9449F2"
-            android:textColor="#fff"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-        
+            android:text="@string/txt_add_alarm"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#fff" />
     </LinearLayout>
-    
-    </ScrollView>
-    
+
 </RelativeLayout>
+
 
 
 // AlarmAddOverlay.java

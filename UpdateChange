@@ -170,7 +170,8 @@ public class CommUtils {
 	 * @param 음력날짜 (yyyyMMdd)
 	 * @return 양력날짜 (yyyyMMdd)
 	 */
-	public static String convertLunarToSolar(String date) {
+	public static String convertStringLunarToSolar(String date) {
+		
 		ChineseCalendar cc = new ChineseCalendar();
 		Calendar cal = Calendar.getInstance();
 
@@ -179,7 +180,62 @@ public class CommUtils {
 		cc.set(ChineseCalendar.DAY_OF_MONTH, Integer.parseInt(date.substring(6)));
 
 		cal.setTimeInMillis(cc.getTimeInMillis());
-		return getDateByShowForamt(cal.getTime());
+
+		return mReceiveFormat.format(cal.getTime());
+	}
+	
+	/**
+	 * 양력날짜를 음력날짜로 변환
+	 * @param 양력날짜 (yyyyMMdd)
+	 * @return 음력날짜 (yyyyMMdd)
+	 */
+	public static String converStringSolarToLunar(String date) {
+		
+		ChineseCalendar cc = new ChineseCalendar();
+		Calendar cal = Calendar.getInstance();
+
+		cal.set(Calendar.YEAR, Integer.parseInt(date.substring(0, 4)));
+		cal.set(Calendar.MONTH, Integer.parseInt(date.substring(4, 6)) - 1);
+		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date.substring(6)));
+
+		cc.setTimeInMillis(cal.getTimeInMillis());
+
+		int y = cc.get(ChineseCalendar.EXTENDED_YEAR) - 2637;
+		int m = cc.get(ChineseCalendar.MONTH) + 1;
+		int d = cc.get(ChineseCalendar.DAY_OF_MONTH);
+
+		StringBuffer ret = new StringBuffer();
+		ret.append(String.format("%04d", y));
+		ret.append(String.format("%02d", m));
+		ret.append(String.format("%02d", d));
+
+		return ret.toString();
+	}
+	
+
+	/**
+	 * 음력날짜를 양력날짜로 변환
+	 * @param 음력날짜 (yyyyMMdd)
+	 * @return 양력날짜 (yyyyMMdd)
+	 */
+	public static LunarSolarEntity convertLunarToSolar(String date) {
+		
+		LunarSolarEntity tmpResult = new LunarSolarEntity();
+		tmpResult.setLunarDate(date);
+		
+		ChineseCalendar cc = new ChineseCalendar();
+		Calendar cal = Calendar.getInstance();
+
+		cc.set(ChineseCalendar.EXTENDED_YEAR, Integer.parseInt(date.substring(0, 4)) + 2637);
+		cc.set(ChineseCalendar.MONTH, Integer.parseInt(date.substring(4, 6)) - 1);
+		cc.set(ChineseCalendar.DAY_OF_MONTH, Integer.parseInt(date.substring(6)));
+
+		cal.setTimeInMillis(cc.getTimeInMillis());
+
+		tmpResult.setConvertDate(getDateByShowForamt(cal.getTime()));
+		tmpResult.setSolarDate(mReceiveFormat.format(cal.getTime()));
+		
+		return tmpResult;
 	}
 
 	/**
@@ -386,7 +442,10 @@ public class LunarSearchAt  extends BaseLoadingActivity {
 	@Nullable @OnClick(R.id.btAddAlarm)
 	public void showAddAlarmOverlay()
 	{
-		overlayAlarm.setVisibility(View.VISIBLE);
+		if(selectDate.length() == 8)
+			overlayAlarm.setVisibility(View.VISIBLE);
+		else
+			Toast.makeText(LunarSearchAt.this, "날짜를 선택해 주세요", Toast.LENGTH_SHORT).show();
 	}
 
 	@Nullable @OnClick(R.id.btSearchDate)
@@ -421,9 +480,12 @@ public class LunarSearchAt  extends BaseLoadingActivity {
 				
 				Log.d("DatePicker", "DATE : " + selectDate);
 				
-				tmpDate = CommUtils.converSolarToLunar(selectDate);
-				tvConvertDate.setText("음력 " + tmpDate.getConvertDate());
+				tmpDate = CommUtils.convertLunarToSolar(selectDate);
+				tvConvertDate.setText("양력 " + tmpDate.getConvertDate());
 				
+//				tmpDate = CommUtils.converSolarToLunar(selectDate);
+//				tvConvertDate.setText("음력 " + tmpDate.getConvertDate());
+
 				btSearchDate.setText(CommUtils.getShowFormat(selectDate));
 			}
 		};
@@ -441,10 +503,20 @@ public class LunarSearchAt  extends BaseLoadingActivity {
 		else
 		{
 			Calendar c = Calendar.getInstance();
-			
+
 			cyear = c.get(Calendar.YEAR);
 			cmonth = c.get(Calendar.MONTH);
 			cday = c.get(Calendar.DAY_OF_MONTH);
+			
+			StringBuffer ret = new StringBuffer();
+			ret.append(String.format("%04d", cyear));
+			ret.append(String.format("%02d", cmonth + 1));
+			ret.append(String.format("%02d", cday));
+			
+			String tmpData = CommUtils.converStringSolarToLunar(ret.toString());
+			cyear = Integer.parseInt(tmpData.substring(0, 4));
+			cmonth = Integer.parseInt(tmpData.substring(4, 6)) - 1;
+			cday =Integer.parseInt( tmpData.substring(6));
 		}
 		
 		DatePickerDialog alert = new DatePickerDialog(LunarSearchAt.this,  mDateSetListener, cyear, cmonth, cday);
@@ -452,6 +524,18 @@ public class LunarSearchAt  extends BaseLoadingActivity {
 		// 날짜제한 - 오늘 날짜 이상은 선택이 안되게
 //		alert.getDatePicker().setMaxDate(new Date().getTime());
 		alert.show();
+	}
+	
+	@Override
+	public void onBackPressed() {
+		
+		if(overlayAlarm.getVisibility() == View.VISIBLE) {
+			overlayAlarm.setVisibility(View.GONE);
+			
+			return;
+		}
+		
+		super.onBackPressed();
 	}
 
 }

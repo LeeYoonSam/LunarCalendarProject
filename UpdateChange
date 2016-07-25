@@ -1,4 +1,5 @@
 #패키지 분리하기
+#메인에서 리사이클러뷰 마지막에 add 제거하고, floating 형태의 버튼을 두고 바로 SearchAt로 이동하게 변경
 
 
 // colors.xml

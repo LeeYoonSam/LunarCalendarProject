@@ -1,3 +1,6 @@
+#패키지 분리하기
+
+
 // colors.xml
 <resources>
     <color name="blue_6799ff">#6799ff</color>

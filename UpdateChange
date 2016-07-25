@@ -83,13 +83,29 @@
                 android:orientation="vertical"
                 android:padding="10dp" >
 
-                <EditText
-                    android:id="@+id/etMemo"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/txt_memo"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:visibility="gone" />
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/etMemo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/txt_memo"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/ivAlarm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/icon_time"
+                        android:visibility="gone" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -414,7 +430,9 @@ public class FavoriteEntity {
 
 
 // LunarSearchAt.java
-//	Realm realm;
+public class LunarSearchAt  extends BaseLoadingActivity {
+
+	//	Realm realm;
 
 	@Nullable @Bind(R.id.btSearchDate)
 	Button btSearchDate;
@@ -427,6 +445,9 @@ public class FavoriteEntity {
 	
 	@Nullable @Bind(R.id.etMemo)
 	EditText etMemo;
+	
+	@Nullable @Bind(R.id.ivAlarm)
+	ImageView ivAlarm;
 	
 	
 	@Nullable @Bind(R.id.overlayAlarm)
@@ -459,6 +480,9 @@ public class FavoriteEntity {
 			saveAlarm = alarm;
 			Log.d("AlarmAddLister", " Hour : " + alarm.getHour() + " Minute : " + alarm.getMinute());
 
+			if(saveAlarm.getHour() != 999 && saveAlarm.getMinute() != 999)
+				ivAlarm.setVisibility(View.VISIBLE);
+			
 			overlayAlarm.setVisibility(View.GONE);
 		}
 	};
@@ -608,6 +632,8 @@ public class FavoriteEntity {
 		super.onBackPressed();
 	}
 }
+
+
 
 
 // overlay_add_alarm.xml

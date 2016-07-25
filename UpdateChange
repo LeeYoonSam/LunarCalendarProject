@@ -2,13 +2,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">YSRetrofitRxSample</string>
+   <string name="app_name">음력날짜 검색</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     
     <string name="txt_memo">간단한 메모를 작성해주세요.</string>
     
-    <string name="txt_search_date">날짜 검색하기</string>
+    <string name="txt_search_date">음력 날짜입력</string>
     
     <string name="txt_year">년</string>
     <string name="txt_month">월</string>

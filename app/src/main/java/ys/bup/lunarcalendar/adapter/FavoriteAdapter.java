@@ -30,7 +30,7 @@ public class FavoriteAdapter extends HFRecyclerView<FavoriteEntity> {
 
     public FavoriteAdapter(List<FavoriteEntity> data, Context context) {
         // With Header & With Footer
-        super(data, false, true);
+        super(data, true, false);
 
         this.context = context;
     }
@@ -43,12 +43,13 @@ public class FavoriteAdapter extends HFRecyclerView<FavoriteEntity> {
 
     @Override
     protected RecyclerView.ViewHolder getHeaderView(LayoutInflater inflater, ViewGroup parent) {
-        return null;
+        return new HeaderViewHolder(inflater.inflate(R.layout.cell_lunar_add, parent, false));
     }
 
     @Override
     protected RecyclerView.ViewHolder getFooterView(LayoutInflater inflater, ViewGroup parent) {
-        return new FooterViewHolder(inflater.inflate(R.layout.cell_lunar_add, parent, false));
+//        return new FooterViewHolder(inflater.inflate(R.layout.cell_lunar_add, parent, false));
+        return null;
     }
     //endregion
 
@@ -69,8 +70,13 @@ public class FavoriteAdapter extends HFRecyclerView<FavoriteEntity> {
     }
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.rlplus)
+        RelativeLayout rlplus;
+
         public HeaderViewHolder(View itemView) {
             super(itemView);
+
+            ButterKnife.bind(this, itemView);
         }
     }
 
@@ -92,20 +98,27 @@ public class FavoriteAdapter extends HFRecyclerView<FavoriteEntity> {
             FavoriteEntity item = getItem(position);
 
             itemViewHolder.tvHeaderTitle.setText(item.getMemo());
-            itemViewHolder.tvHeaderDate.setText(item.getDisplayDate());
+            itemViewHolder.tvHeaderDate.setText(item.showSolarDate());
 
         } else if (holder instanceof HeaderViewHolder) {
-
-        } else if (holder instanceof FooterViewHolder) {
-
-            FooterViewHolder fHolder = (FooterViewHolder) holder;
-            fHolder.rlplus.setOnClickListener(new View.OnClickListener() {
+            HeaderViewHolder hHolder = (HeaderViewHolder) holder;
+            hHolder.rlplus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(context, LunarSearchAt.class);
                     context.startActivity(i);
                 }
             });
+        } else if (holder instanceof FooterViewHolder) {
+
+//            FooterViewHolder fHolder = (FooterViewHolder) holder;
+//            fHolder.rlplus.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent i = new Intent(context, LunarSearchAt.class);
+//                    context.startActivity(i);
+//                }
+//            });
         }
     }
 

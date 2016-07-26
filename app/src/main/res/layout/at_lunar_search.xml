@@ -1,117 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#EAEAEA" >
+
+<Button
+    android:id="@+id/btSearchDate"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="#6799FF"
+    android:text="@string/txt_search_date"
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:textColor="#EAEAEA" />
 
-    <LinearLayout
-        android:id="@+id/llTop"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/btLunar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#555555"
-            android:text="음력" />
-
-        <Button
-            android:id="@+id/btSolar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#777777"
-            android:text="양력" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="51dp"
-        android:layout_below="@id/llTop"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/tvYear"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:hint="@string/txt_year"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:id="@+id/tvMonth"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:hint="@string/txt_month"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:id="@+id/tvDay"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:hint="@string/txt_day"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#151515" />
-    </LinearLayout>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/btSearchDate"
+    android:fillViewport="true" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" >
+        android:layout_height="match_parent" >
 
-        <TextView
-            android:id="@+id/tvConvertDate"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:layout_centerInParent="true"
+            android:padding="10dp" >
+
+            <TextView
+                android:id="@+id/tvConvertDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#6799FF" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/llEditArea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/etMemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/txt_memo"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/ivAlarm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/btn_alarm_on"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/btAddFavorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="#6799FF"
+                    android:text="@string/txt_add_date"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#EAEAEA"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btAddAlarm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#6799FF"
+                    android:text="@string/txt_add_alarm"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#EAEAEA" />
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
+</ScrollView>
 
-    <LinearLayout
-        android:id="@+id/llBottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:gravity="center" >
-
-        <Button
-            android:id="@+id/btAddFavorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_add_date"
-            android:visibility="gone"/>
-        
-        <Button
-            android:id="@+id/btAddAlarm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_add_alarm" />
-    </LinearLayout>
-    
-    <ys.bup.lunarcalendar.activities.AlarmAddOverlay
-        android:id="@+id/overlayAlarm"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+<ys.bup.lunarcalendar.activities.AlarmAddOverlay
+    android:id="@+id/overlayAlarm"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone" />
 
 </RelativeLayout>

@@ -8,9 +8,7 @@ import android.support.annotation.IntRange;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -18,17 +16,23 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ys.bup.lunarcalendar.R;
 
-public class AlarmAddOverlay extends FrameLayout implements OnClickListener {
 
-	EditText etMemo;
+public class AlarmAddOverlay extends FrameLayout {
 
+	@BindView(R.id.tvHour)
 	TextView tvHour;
+
+	@BindView(R.id.tvMinute)
 	TextView tvMinute;
 
+	@BindView(R.id.btAlarmAdd)
 	Button btAlarmAdd;
-	
+
 	Activity parentAt;
 
 	private AlarmAddListener parentListener;
@@ -49,76 +53,37 @@ public class AlarmAddOverlay extends FrameLayout implements OnClickListener {
 		LayoutInflater inflater = LayoutInflater.from(getContext());
 		final View view = inflater.inflate(R.layout.overlay_add_alarm, this);
 
-		etMemo = (EditText)view.findViewById(R.id.etMemo);
-
-		tvHour = (TextView)view.findViewById(R.id.tvHour);
-		tvHour.setOnClickListener(this);
-
-		tvMinute = (TextView)view.findViewById(R.id.tvMinute);
-		tvMinute.setOnClickListener(this);
-
-		btAlarmAdd = (Button)view.findViewById(R.id.btAlarmAdd);
-		btAlarmAdd.setOnClickListener(this);
+		ButterKnife.bind(this, view);
 	}
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.tvHour:
-		case R.id.tvMinute:
-			callNumberPicker();
-			break;
 
-		case R.id.btAlarmAdd:
-
-			params.setMemo(etMemo.getText().toString());
-
-			if(checkInvalid()) {
-				parentListener.clickAdd(params);
-				CommUtils.hideSoftInput(parentAt, etMemo);
-			}
-
-			break;
-		default:
-			break;
-		}
+	@OnClick({R.id.tvHour, R.id.tvMinute})
+	public void onClickShowPicker() {
+		callNumberPicker();
 	}
 
-	public boolean checkInvalid()
-	{
-		try {
-			if(params.getMemo() == null || params.getMemo().length() < 1) {
-				Toast.makeText(this.getContext(), "메모를 작성해주세요", Toast.LENGTH_SHORT).show();
-				return false;
-			}
-
-			if(params.getHour() == 999 || params.getMinute() == 999) {
-				Toast.makeText(this.getContext(), "시간을 지정해주세요", Toast.LENGTH_SHORT).show();
-				return false;
-			}
-
-			return true;
+	@OnClick(R.id.btAlarmAdd)
+	public void onClickAddAlarm() {
+		if(params.hour == 999 || params.minute == 999) {
+			Toast.makeText(this.getContext(), "시간을 선택 주세요.", Toast.LENGTH_SHORT).show();
+			return;
 		}
-		catch (Exception e){
-			e.printStackTrace();
 
-			return false;
-		}
+		parentListener.clickAdd(params);
 	}
 
-	// 알람 날짜 선택
 	public void callNumberPicker()
 	{
 		// timepicker set Callback
 		OnTimeSetListener tCallBack = new OnTimeSetListener() {
-			
+
 			@Override
 			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 				try
 				{
 					params.setHour(hourOfDay);
 					params.setMinute(minute);
-					
+
 					tvHour.setText(Integer.toString(hourOfDay));
 					tvMinute.setText(Integer.toString(minute));
 				}
@@ -128,7 +93,7 @@ public class AlarmAddOverlay extends FrameLayout implements OnClickListener {
 				}
 			}
 		};
-		
+
 		int hour;
 		int min;
 
@@ -154,12 +119,10 @@ public class AlarmAddOverlay extends FrameLayout implements OnClickListener {
 	// 알람 객체
 	public class AlarmObject implements Comparable<AlarmObject>
 	{
-		String memo;
 		int hour;
 		int minute;
 
 		public AlarmObject() {
-			this.memo = null;
 			this.hour = 999;
 			this.minute = 999;
 		}
@@ -167,14 +130,6 @@ public class AlarmAddOverlay extends FrameLayout implements OnClickListener {
 		public AlarmObject(@IntRange(from=0, to=23) int hour, @IntRange(from=0, to=59) int minute) {
 			this.hour = hour;
 			this.minute = minute;
-		}
-
-		public String getMemo() {
-			return memo;
-		}
-
-		public void setMemo(String memo) {
-			this.memo = memo;
 		}
 
 		public int getHour() {
@@ -198,5 +153,4 @@ public class AlarmAddOverlay extends FrameLayout implements OnClickListener {
 			return (this.hour - t.hour)*3600 + (this.minute - t.minute)*60;
 		}
 	}
-
 }

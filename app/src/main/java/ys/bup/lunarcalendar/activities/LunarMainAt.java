@@ -60,36 +60,6 @@ public class LunarMainAt extends BaseLoadingActivity {
 
         if(result != null && result.size() > 0)
             alFavorite.addAll(result);
-        else
-        {
-            FavoriteEntity data = new FavoriteEntity();
-            data.setMemo("누구 제사");
-            data.setYear("2016");
-            data.setMonth("04");
-            data.setDay("01");
-            alFavorite.add(data);
-
-            data = new FavoriteEntity();
-            data.setMemo("누구 생일");
-            data.setYear("2016");
-            data.setMonth("05");
-            data.setDay("01");
-            alFavorite.add(data);
-
-            data = new FavoriteEntity();
-            data.setMemo("누구 기타");
-            data.setYear("2016");
-            data.setMonth("06");
-            data.setDay("21");
-            alFavorite.add(data);
-
-            data = new FavoriteEntity();
-            data.setMemo("이게 무슨");
-            data.setYear("2016");
-            data.setMonth("07");
-            data.setDay("16");
-            alFavorite.add(data);
-        }
 
         adapter.notifyDataSetChanged();
 

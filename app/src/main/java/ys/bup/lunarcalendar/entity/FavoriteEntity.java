@@ -2,6 +2,7 @@ package ys.bup.lunarcalendar.entity;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Required;
+import ys.bup.lunarcalendar.activities.CommUtils;
 
 public class FavoriteEntity extends RealmObject {
 
@@ -9,94 +10,71 @@ public class FavoriteEntity extends RealmObject {
 	private String memo;
 
 	@Required
-	private String year;
+	private String solarDate;
 
 	@Required
-	private String month;
+	private String lunarDate;
 
-	@Required
-	private String day;
+	private int alarmHour;
+	private int alarmMinute;
+	private boolean isAlarmOn;
 
-	private boolean isLunar;
-
-	private int hour;
-	private int minute;
-
-	public FavoriteEntity()
-	{
+	public FavoriteEntity () {
 		this.memo = null;
-		this.year = null;
-		this.month = null;
-		this.day = null;
-		this.isLunar = true;
-		this.hour = 999;
-		this.minute = 999;
+		this.solarDate = null;
+		this.lunarDate = null;
+		this.isAlarmOn = false;
 
-	}
-
-	public String getDay() {
-		return day;
-	}
-
-	public void setDay(String day) {
-		this.day = day;
-	}
-
-	public int getHour() {
-		return hour;
-	}
-
-	public void setHour(int hour) {
-		this.hour = hour;
+		this.alarmHour = 999;
+		this.alarmMinute = 999;
 	}
 
 	public String getMemo() {
 		return memo;
 	}
-
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-
-	public int getMinute() {
-		return minute;
+	public String getSolarDate() {
+		return solarDate;
+	}
+	public void setSolarDate(String solarDate) {
+		this.solarDate = solarDate;
+	}
+	public String getLunarDate() {
+		return lunarDate;
+	}
+	public void setLunarDate(String lunarDate) {
+		this.lunarDate = lunarDate;
+	}
+	public boolean isAlarmOn() {
+		return isAlarmOn;
+	}
+	public void setAlarmOn(boolean isAlarmOn) {
+		this.isAlarmOn = isAlarmOn;
 	}
 
-	public void setMinute(int minute) {
-		this.minute = minute;
+	public int getAlarmHour() {
+		return alarmHour;
 	}
 
-	public String getMonth() {
-		return month;
+	public void setAlarmHour(int alarmHour) {
+		this.alarmHour = alarmHour;
 	}
 
-	public void setMonth(String month) {
-		this.month = month;
+	public int getAlarmMinute() {
+		return alarmMinute;
 	}
 
-	public String getYear() {
-		return year;
+	public void setAlarmMinute(int alarmMinute) {
+		this.alarmMinute = alarmMinute;
 	}
 
-	public void setYear(String year) {
-		this.year = year;
+	public String showLunarDate() {
+		return CommUtils.getShowFormat(this.lunarDate);
 	}
 
-	public boolean isLunar() {
-		return isLunar;
-	}
-
-	public void setLunar(boolean lunar) {
-		isLunar = lunar;
-	}
-
-	public String getDisplayDate()
-	{
-		if(this.year != null && this.month != null && this.day != null)
-		{
-			return year + "-" + month + "-" + day;
-		}
-
-		return "";
+	public String showSolarDate() {
+		return CommUtils.getShowFormat(this.solarDate);
 	}
 }

@@ -18,7 +18,7 @@ public class BaseLoadingActivity extends Activity {
 	ProgressDialog pbLoading = null;
 
 	Realm realm;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,5 +79,5 @@ public class BaseLoadingActivity extends Activity {
 	};
 	
 	public void onChangeNetwork(int type) {}
-		
+
 }

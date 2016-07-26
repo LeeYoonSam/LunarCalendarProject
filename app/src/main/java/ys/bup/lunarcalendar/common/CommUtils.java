@@ -1,4 +1,4 @@
-package ys.bup.lunarcalendar.activities;
+package ys.bup.lunarcalendar.common;
 
 import com.ibm.icu.util.ChineseCalendar;
 

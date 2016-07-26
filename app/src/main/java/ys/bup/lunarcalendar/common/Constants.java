@@ -1,4 +1,4 @@
-package ys.bup.lunarcalendar.activities;
+package ys.bup.lunarcalendar.common;
 
 public class Constants {
 	public static final int TYPE_ALARM_YEAR = 100;

@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.Realm;
 import ys.bup.lunarcalendar.R;
+import ys.bup.lunarcalendar.common.CommUtils;
 import ys.bup.lunarcalendar.entity.FavoriteEntity;
 
 public class LunarSearchAt  extends BaseLoadingActivity {

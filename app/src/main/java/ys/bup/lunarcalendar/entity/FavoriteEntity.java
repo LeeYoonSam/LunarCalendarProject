@@ -2,7 +2,7 @@ package ys.bup.lunarcalendar.entity;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Required;
-import ys.bup.lunarcalendar.activities.CommUtils;
+import ys.bup.lunarcalendar.common.CommUtils;
 
 public class FavoriteEntity extends RealmObject {
 

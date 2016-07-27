@@ -1,3 +1,385 @@
+// Manifest.xml
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+<receiver android:name=".lunar.calendar.AlarmReceiver">
+   <intent-filter>
+       	<action android:name="android.intent.action.BOOT_COMPLETED" />
+   	</intent-filter>
+</receiver>
+
+
+// FavoriteEntity.java
+public class FavoriteEntity {
+
+	private Date insertDate;
+
+	private String memo;
+	private String solarDate;
+	private String lunarDate;
+
+	private int alarmHour;
+	private int alarmMinute;
+	
+	private boolean isAlarmOn;
+	private boolean isAlarmRepeat;
+
+	public FavoriteEntity () {
+		this.memo = null;
+		this.solarDate = null;
+		this.lunarDate = null;
+
+		this.alarmHour = 999;
+		this.alarmMinute = 999;
+		
+		this.isAlarmOn = false;
+		this.isAlarmRepeat = false;
+	}
+
+	public Date getInsertDate() {
+		return insertDate;
+	}
+
+	public void setInsertDate(Date insertDate) {
+		this.insertDate = insertDate;
+	}
+
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+	public String getSolarDate() {
+		return solarDate;
+	}
+	public void setSolarDate(String solarDate) {
+		this.solarDate = solarDate;
+	}
+	public String getLunarDate() {
+		return lunarDate;
+	}
+	public void setLunarDate(String lunarDate) {
+		this.lunarDate = lunarDate;
+	}
+	
+	public int getAlarmHour() {
+		return alarmHour;
+	}
+
+	public void setAlarmHour(int alarmHour) {
+		this.alarmHour = alarmHour;
+	}
+
+	public int getAlarmMinute() {
+		return alarmMinute;
+	}
+
+	public void setAlarmMinute(int alarmMinute) {
+		this.alarmMinute = alarmMinute;
+	}
+
+	public String showLunarDate() {
+		return CommUtils.getShowFormat(this.lunarDate);
+	}
+
+	public String showSolarDate() {
+		return CommUtils.getShowFormat(this.solarDate);
+	}
+
+	public boolean isAlarmOn() {
+		return isAlarmOn;
+	}
+	
+	public void setAlarmOn(boolean isAlarmOn) {
+		this.isAlarmOn = isAlarmOn;
+	}
+
+	public boolean isAlarmRepeat() {
+		return isAlarmRepeat;
+	}
+
+	public void setAlarmRepeat(boolean isAlarmRepeat) {
+		this.isAlarmRepeat = isAlarmRepeat;
+	}	
+}
+
+
+// AlarmEntity.java
+public class AlarmEntity implements Comparable<AlarmEntity>
+{
+	int hour;
+	int minute;
+	
+	boolean isRepeat;
+
+	public AlarmEntity() {
+		this.hour = 999;
+		this.minute = 999;
+		
+		this.isRepeat = false;
+	}
+
+	public AlarmEntity(@IntRange(from=0, to=23) int hour, @IntRange(from=0, to=59) int minute) {
+		this.hour = hour;
+		this.minute = minute;
+	}
+
+	public int getHour() {
+		return hour;
+	}
+
+	public void setHour(int hour) {
+		this.hour = hour;
+	}
+
+	public int getMinute() {
+		return minute;
+	}
+
+	public void setMinute(int minute) {
+		this.minute = minute;
+	}
+
+	public boolean isRepeat() {
+		return isRepeat;
+	}
+
+	public void setRepeat(boolean isRepeat) {
+		this.isRepeat = isRepeat;
+	}
+
+	@Override
+	public int compareTo(AlarmEntity t) {
+		return (this.hour - t.hour)*3600 + (this.minute - t.minute)*60;
+	}
+
+}
+
+
+// AlarmReceiver.java
+public class AlarmReceiver extends BroadcastReceiver {
+	
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		
+		
+        String action = intent.getAction();
+        Log.d("AlarmReceiver", "AlarmReceiver " + action);
+        
+        if(action == null) {
+        	setNotification(context, intent);
+        }
+        else if(action.equals(Intent.ACTION_BOOT_COMPLETED)){
+       		AlarmTimeManager alarmObject = AlarmTimeManager.getInstance(context.getApplicationContext());;
+       		alarmObject.restoreAlarm();
+        }
+        else {
+        	setNotification(context, intent);
+        }
+	}
+	
+	private void setNotification(Context context, Intent intent) {
+		Bundle bundle = intent.getExtras();   
+		
+		CharSequence msg = bundle.getString("MESSAGE");
+		
+		Log.d("AlarmReceiver  setNotification", msg.toString());
+		
+		Toast.makeText(context, msg, 1000).show();
+
+		Intent i = new Intent(context.getApplicationContext(), MainAt.class);
+//		i.putExtra("push", bundle);
+		PendingIntent pi = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+		
+		int icon = R.drawable.ic_launcher;
+		long when = new GregorianCalendar().getTimeInMillis();
+		
+		Notification noti = new Notification(icon, msg, when);
+		noti.sound = Uri.withAppendedPath(Audio.Media.INTERNAL_CONTENT_URI, "1");//ringURI;
+		noti.defaults |= Notification.DEFAULT_VIBRATE;
+	   	noti.setLatestEventInfo(context, context.getString(R.string.app_name), msg, pi);
+	   	noti.flags = noti.flags | Notification.FLAG_AUTO_CANCEL;
+	  	   	   	      	   
+	    NotificationManager mNotification = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+	  	   
+	    mNotification.notify(7777, noti);
+	}
+
+}
+
+
+// AlarmTimeManager.java
+public class AlarmTimeManager {
+
+	private static AlarmTimeManager instance = null;
+
+	private ArrayList<FavoriteEntity> alarmList = new ArrayList<FavoriteEntity>();
+
+	private AlarmManager mManager;
+
+	private Context _context;
+
+	// constructor
+	public AlarmTimeManager(Context context) {
+		mManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+		this._context = context;
+	}
+
+	public static AlarmTimeManager getInstance(Context context) {
+		if( instance == null) {
+			synchronized (AlarmTimeManager.class) {
+				if(instance == null) {
+					instance = new AlarmTimeManager(context);
+				}
+			}
+		}			
+		return instance;
+	}
+
+	// 앱 재부팅시 다시 등록하기
+	public void restoreAlarm() 
+	{
+		for (FavoriteEntity alarmItem: alarmList) {
+			try {
+				insertAlarm(alarmItem);
+			}
+			catch (Exception e) {}
+		}
+	}
+
+	// 알람 설정
+	public void setAlarm(FavoriteEntity alarmItem) 
+	{
+		insertAlarm(alarmItem);
+
+		alarmList.remove(alarmItem);
+		alarmList.add(alarmItem);
+	}
+
+	public void cancelAlarm(FavoriteEntity object)
+	{    	
+		deleteAlarm(Long.toString(object.getInsertDate().getTime()));
+
+		alarmList.remove(object);
+	}
+
+	public boolean checkAlarm(FavoriteEntity object)
+	{
+		if (existAlarm(Long.toString(object.getInsertDate().getTime()))) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private void insertAlarm(FavoriteEntity alarmItem)
+	{
+		GregorianCalendar mCalendar = new GregorianCalendar();
+
+//		long now = System.currentTimeMillis();
+		long insertTime = alarmItem.getInsertDate().getTime();
+
+
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(insertTime);
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		int dayofmonth = c.get(Calendar.DAY_OF_MONTH);
+
+		mCalendar.set(year, month, dayofmonth, alarmItem.getAlarmHour(), alarmItem.getAlarmMinute(), 0);
+
+		//		if (insertTime > mCalendar.getTimeInMillis())
+		//		{
+		//			mCalendar.add(Calendar.DAY_OF_MONTH, 1);
+		//		}
+		//
+		//		if (now < mCalendar.getTimeInMillis())
+		//		{
+		//			// 입력받은 날짜의 time 을 알람코드로 사용 
+		//			String alarmCode = Long.toString(alarmItem.getInsertDate().getTime());
+		//			String alarmMsg = "알람 설정"; 
+		//
+		//			saveAlarm(_context, Integer.parseInt(alarmCode), alarmMsg, mCalendar.getTimeInMillis(), alarmItem.isAlarmRepeat());
+		//		}
+
+		// 입력받은 날짜의 time 을 알람코드로 사용 / int 범위를 초과하기 때문에 앞에 4자리 자름
+		String alarmCode = Long.toString(alarmItem.getInsertDate().getTime()).substring(4);
+		String alarmMsg = alarmItem.getMemo(); 
+
+		saveAlarm(Integer.parseInt(alarmCode), alarmMsg, mCalendar.getTimeInMillis(), alarmItem.isAlarmRepeat());
+
+		if(alarmItem.isAlarmRepeat())
+			mCalendar.add(Calendar.DAY_OF_YEAR, 1);
+	}
+
+	// 저장하기
+	private void saveAlarm(int intent_id, String msg, long when, boolean isRepeat)
+	{
+		Intent intent = new Intent(_context, AlarmReceiver.class);
+		intent.putExtra("MESSAGE", msg);
+		intent.putExtra("NOTIID", "7777");
+		PendingIntent sender = PendingIntent.getBroadcast(_context, intent_id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		if(isRepeat)
+			mManager.setRepeating(AlarmManager.RTC_WAKEUP, when, AlarmManager.INTERVAL_DAY, sender);
+		else
+			mManager.set(AlarmManager.RTC_WAKEUP, when, sender);
+	}
+
+	private void deleteAlarm(String code)
+	{
+		final int intent_id = Integer.parseInt(code);
+
+		Intent intent = new Intent(_context, AlarmReceiver.class);
+
+		PendingIntent sender = PendingIntent.getBroadcast(_context, intent_id, intent, PendingIntent.FLAG_NO_CREATE);
+		if (sender != null) {
+			mManager.cancel(sender);
+			sender.cancel();
+		}
+	}
+
+	private boolean existAlarm(String code) {
+		boolean result = false;
+
+		final int intent_id = Integer.parseInt(code);
+
+		Intent intent = new Intent(_context.getApplicationContext(), AlarmReceiver.class);
+
+		PendingIntent sender = PendingIntent.getBroadcast(_context.getApplicationContext(), intent_id, intent, PendingIntent.FLAG_NO_CREATE);
+		if (sender != null)
+		{
+			result = true;
+		}
+		return result;
+	}
+
+
+	//    private  void setSharedPreferences(){
+		//		try {
+	//			JSONArray jsonArray = new JSONArray();
+	//			for(int i=0; i< alarmList.size(); i++) {
+	//				FavoriteEntity object = alarmList.get(i);
+	//				JSONObject json = object.getJson();
+	//				jsonArray.put(json);
+	//			}
+	//            Editor ed = pref.edit();
+	//            ed.putString("alarmObject", jsonArray.toString());
+	//            ed.commit();
+	//		} catch (Exception e) {
+	//			// TODO Auto-generated catch block
+	//			e.printStackTrace();
+	//		}
+	//	}
+}
+
+
+
+
+
+
+[ 2016. 07. 27 적용 완료]
+
 #패키지 분리하기
 #메인에서 리사이클러뷰 마지막에 add 제거하고, floating 형태의 버튼을 두고 바로 SearchAt로 이동하게 변경
 

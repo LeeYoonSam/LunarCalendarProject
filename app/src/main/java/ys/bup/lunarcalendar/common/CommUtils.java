@@ -1,15 +1,17 @@
 package ys.bup.lunarcalendar.common;
 
+import android.app.Activity;
+import android.content.Context;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
 import com.ibm.icu.util.ChineseCalendar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import android.app.Activity;
-import android.content.Context;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import ys.bup.lunarcalendar.entity.LunarSolarEntity;
 
 public class CommUtils {
 
@@ -20,33 +22,6 @@ public class CommUtils {
 
 	public static final SimpleDateFormat mReceiveFormat = new SimpleDateFormat ( "yyyyMMdd");
 	public static final SimpleDateFormat mShowFormat = new SimpleDateFormat ( "yyyy. MM. dd");
-
-	public static class LunarSolarEntity {
-
-		String lunarDate;
-		String solarDate;
-		String convertDate;
-
-		public String getLunarDate() {
-			return lunarDate;
-		}
-		public void setLunarDate(String lunarDate) {
-			this.lunarDate = lunarDate;
-		}
-		public String getSolarDate() {
-			return solarDate;
-		}
-		public void setSolarDate(String solarDate) {
-			this.solarDate = solarDate;
-		}
-		public String getConvertDate() {
-			return convertDate;
-		}
-		public void setConvertDate(String convertDate) {
-			this.convertDate = convertDate;
-		}
-	}
-
 
 	public static String getDateByShowForamt(Date date) {
 		return mShowFormat.format(date);
@@ -134,6 +109,7 @@ public class CommUtils {
 
 		tmpResult.setConvertDate(getDateByShowForamt(cal.getTime()));
 		tmpResult.setSolarDate(mReceiveFormat.format(cal.getTime()));
+		tmpResult.setInsertDate(new Date(cal.getTimeInMillis()));
 
 		return tmpResult;
 	}
@@ -168,9 +144,11 @@ public class CommUtils {
 
 		tmpResult.setConvertDate(ret.toString());
 		tmpResult.setLunarDate(ret.replace(0, ret.length(), "-").toString());
+		tmpResult.setInsertDate(new Date(cal.getTimeInMillis()));
 
 		return tmpResult;
 	}
+
 
 	public static int getDivision(float value)
 	{

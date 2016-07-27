@@ -1,10 +1,14 @@
 package ys.bup.lunarcalendar.entity;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 import io.realm.annotations.Required;
 import ys.bup.lunarcalendar.common.CommUtils;
 
 public class FavoriteEntity extends RealmObject {
+
+	private Date insertDate;
 
 	@Required
 	private String memo;
@@ -17,16 +21,28 @@ public class FavoriteEntity extends RealmObject {
 
 	private int alarmHour;
 	private int alarmMinute;
+
 	private boolean isAlarmOn;
+	private boolean isAlarmRepeat;
 
 	public FavoriteEntity () {
 		this.memo = null;
 		this.solarDate = null;
 		this.lunarDate = null;
-		this.isAlarmOn = false;
 
 		this.alarmHour = 999;
 		this.alarmMinute = 999;
+
+		this.isAlarmOn = false;
+		this.isAlarmRepeat = false;
+	}
+
+	public Date getInsertDate() {
+		return insertDate;
+	}
+
+	public void setInsertDate(Date insertDate) {
+		this.insertDate = insertDate;
 	}
 
 	public String getMemo() {
@@ -46,12 +62,6 @@ public class FavoriteEntity extends RealmObject {
 	}
 	public void setLunarDate(String lunarDate) {
 		this.lunarDate = lunarDate;
-	}
-	public boolean isAlarmOn() {
-		return isAlarmOn;
-	}
-	public void setAlarmOn(boolean isAlarmOn) {
-		this.isAlarmOn = isAlarmOn;
 	}
 
 	public int getAlarmHour() {
@@ -76,5 +86,21 @@ public class FavoriteEntity extends RealmObject {
 
 	public String showSolarDate() {
 		return CommUtils.getShowFormat(this.solarDate);
+	}
+
+	public boolean isAlarmOn() {
+		return isAlarmOn;
+	}
+
+	public void setAlarmOn(boolean isAlarmOn) {
+		this.isAlarmOn = isAlarmOn;
+	}
+
+	public boolean isAlarmRepeat() {
+		return isAlarmRepeat;
+	}
+
+	public void setAlarmRepeat(boolean isAlarmRepeat) {
+		this.isAlarmRepeat = isAlarmRepeat;
 	}
 }

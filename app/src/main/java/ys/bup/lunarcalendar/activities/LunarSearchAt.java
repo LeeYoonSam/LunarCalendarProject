@@ -20,6 +20,8 @@ import io.realm.Realm;
 import ys.bup.lunarcalendar.R;
 import ys.bup.lunarcalendar.common.CommUtils;
 import ys.bup.lunarcalendar.entity.FavoriteEntity;
+import ys.bup.lunarcalendar.entity.LunarSolarEntity;
+import ys.bup.lunarcalendar.receiver.AlarmTimeManager;
 
 public class LunarSearchAt  extends BaseLoadingActivity {
 
@@ -47,7 +49,7 @@ public class LunarSearchAt  extends BaseLoadingActivity {
 	AlarmAddOverlay.AlarmObject saveAlarm;
 
 	String selectDate = "";
-	CommUtils.LunarSolarEntity tmpDate;
+	LunarSolarEntity tmpDate;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,11 @@ public class LunarSearchAt  extends BaseLoadingActivity {
 
 		overlayAlarm.setAddAlarmListener(alarmCallback, LunarSearchAt.this);
 		overlayAlarm.setVisibility(View.GONE);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 
 		realm = Realm.getDefaultInstance();
 	}
@@ -105,7 +112,11 @@ public class LunarSearchAt  extends BaseLoadingActivity {
 				}
 			}
 
-			// 알람 저장
+			tmp.setLunarDate(tmpDate.getLunarDate());
+			tmp.setSolarDate(tmpDate.getSolarDate());
+			tmp.setInsertDate(tmpDate.getInsertDate());
+
+			// 알람 추가 작업해야함
 			if(saveAlarm != null)
 			{
 				// 알람이 유효할때만 저장하고 알람 상태값 변경하기
@@ -114,14 +125,11 @@ public class LunarSearchAt  extends BaseLoadingActivity {
 					tmp.setAlarmMinute(saveAlarm.getMinute());
 
 					tmp.setAlarmOn(true);
+
+					// 입력 성공후에 알람 설정하도록 수정해야함
+					new AlarmTimeManager(LunarSearchAt.this).setAlarm(tmp);
 				}
 			}
-
-			tmp.setLunarDate(tmpDate.getLunarDate());
-			tmp.setSolarDate(tmpDate.getSolarDate());
-
-			 // 알람 추가 작업해야함
-
 
 			realm.commitTransaction();
 

@@ -15,3 +15,121 @@ public boolean checkAlarm(FavoriteEntity object) {
 
 // 알람 취소시
 AlarmTimeManager.getInstance(LunarMainAt.this).cancelAlarm(CommUtils.alFavorite.get(position));
+
+
+
+---------------------------------------------------------------
+
+@Module
+public class AppModule {
+
+	LunarCalendarApplication application;
+
+	public AppModule(LunarCalendarApplication application) {
+		this.application = application;
+	}
+
+	@Provides
+	@Singleton
+	Context provideApplicationContext() {
+		return application;
+	}
+
+	@Provides
+	@Singleton
+	RealmConfiguration providesRealmConfiguration(Application application) {
+		RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(application).deleteRealmIfMigrationNeeded().build();
+		Realm.setDefaultConfiguration(realmConfiguration);
+
+		return realmConfiguration;
+	}
+	
+	@Provides
+	@Singleton
+	DisplayMetrics providesDisplayMetrics(Application application) {
+		return application.getResources().getDisplayMetrics();
+	}
+}
+
+---------------------------------------------------------------
+
+@Singleton
+@Component(modules = AppModule.class)
+public interface AppComponent {
+	void inject(LunarCalendarApplication application);
+	void inject(LunarMainAt mainActivity);
+	
+	RealmConfiguration realmConfiguration;
+	DisplayMetrics providesDisplayMetrics;
+}
+
+
+---------------------------------------------------------------
+
+@Module
+public class AlarmManagerModule {
+
+	Context context;
+	
+	public AlarmManagerModule(Context context) {
+		this.context = context;
+	}
+	
+	@Provides
+	@Singleton
+	AlarmManager providesAlarmManager(Context context) {
+		return (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);	
+	}
+}
+
+
+---------------------------------------------------------------
+
+
+// 인터페이스 추가 후 AlarmTimeManager에서 AlarmControl 상속받아서 구현하도록 전체 메소드 수정
+public interface AlarmControl {
+	 // 앱 재부팅시 다시 등록하기
+    void restoreAlarm();
+
+    // 알람 설정
+    void setAlarm(FavoriteEntity alarmItem);
+    
+    // 알람 취소
+    void cancelAlarm(FavoriteEntity object);
+    
+    // 알람 체크
+    boolean checkAlarm(FavoriteEntity object);
+    
+    // 알람 추가
+    void insertAlarm(FavoriteEntity alarmItem);
+
+    // 알람 저장하기
+    void saveAlarm(int intent_id, String msg, long when, boolean isRepeat);
+    
+    // 알람 삭제
+    void deleteAlarm(String code);
+    
+    // 중복 알람 확인
+    boolean existAlarm(String code);
+}
+
+
+---------------------------------------------------------------
+
+@Singleton
+@Component(dependency = AppComponent.class, modules = AlarmManagerModule.class)
+public interface AlarmManagerComponent {
+	
+	private AlarmControl alarmControl;
+	
+	public AlarmManagerComponent(AlarmControl alarmControl) {
+		this.alarmControl = alarmControl;
+	}
+	
+	@Provides
+	AlarmControl providesAlarmControl() {
+		return alarmControl;
+	}
+	
+	AlarmManager alarmManager;
+}

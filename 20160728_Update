@@ -14,8 +14,16 @@ public boolean checkAlarm(FavoriteEntity object) {
 }
 
 saveAlarm메서드에 if(isRepeat)안에 추가하기
-//			long interval = 365 * 24 * 60 * 60 * 1000;	// 매년 (윤년이 끼면 맞지 않을수 있으므로 처리를 다시 해야한다.)
-			long interval = 30 * 1000;	// 30초마다 반복 테스트
+
+	long interval = 0;
+//			if(CommUtils.chkYun(2001))
+//				interval = 366 * 24 * 60 * 60 * 1000;	// 윤년
+//			else 
+//				interval = 365 * 24 * 60 * 60 * 1000;
+
+	interval = 30 * 1000;	// 30초마다 반복 테스트
+	
+	mManager.setRepeating(AlarmManager.RTC_WAKEUP, when, interval, sender);
 
 
 // 알람 취소시
@@ -24,6 +32,31 @@ AlarmTimeManager.getInstance(LunarMainAt.this).cancelAlarm(CommUtils.alFavorite.
 
 
 ---------------------------------------------------------------
+
+Commonutis.java
+public static boolean chkYun(int year) { 
+	boolean isYun=false; 
+
+	if( (0 == (year % 4) && 
+			0 != (year %100)) || 
+			0 == year%400 ){ 
+		isYun = true; 
+	}else{ 
+		isYun = false; 
+	} 
+
+	if(isYun){ 
+		System.out.println(year+"는 윤년. "); 
+	}else{ 
+		System.out.println(year+"는 윤년이 아님."); 
+	}
+	
+	return isYun;
+}
+	
+
+---------------------------------------------------------------
+
 
 @Module
 public class AppModule {

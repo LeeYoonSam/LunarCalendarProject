@@ -12,3 +12,6 @@ public boolean checkAlarm(FavoriteEntity object) {
 
 	return false;
 }
+
+// 알람 취소시
+AlarmTimeManager.getInstance(LunarMainAt.this).cancelAlarm(CommUtils.alFavorite.get(position));

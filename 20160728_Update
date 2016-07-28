@@ -1,0 +1,14 @@
+// AlarmTimeManager.java
+public void cancelAlarm(FavoriteEntity object) {    	
+	deleteAlarm(Long.toString(object.getInsertDate().getTime()).substring(4));
+
+	alarmList.remove(object);
+}
+
+public boolean checkAlarm(FavoriteEntity object) {
+	if (existAlarm(Long.toString(object.getInsertDate().getTime()).substring(4))) {
+		return true;
+	}
+
+	return false;
+}

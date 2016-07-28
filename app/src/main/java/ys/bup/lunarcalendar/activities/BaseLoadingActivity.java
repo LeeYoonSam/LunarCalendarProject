@@ -22,7 +22,7 @@ public class BaseLoadingActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		IntentFilter intentFilter = new IntentFilter(ACTION_NETWORKCHANGE);
 		registerReceiver(mRecevier, intentFilter);
 		

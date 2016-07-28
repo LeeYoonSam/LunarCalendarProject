@@ -149,6 +149,25 @@ public class CommUtils {
 		return tmpResult;
 	}
 
+	public static boolean chkYun(int year) {
+		boolean isYun=false;
+
+		if( (0 == (year % 4) &&
+				0 != (year %100)) ||
+				0 == year%400 ){
+			isYun = true;
+		}else{
+			isYun = false;
+		}
+
+		if(isYun){
+			System.out.println(year+"는 윤년. ");
+		}else{
+			System.out.println(year+"는 윤년이 아님.");
+		}
+
+		return isYun;
+	}
 
 	public static int getDivision(float value)
 	{

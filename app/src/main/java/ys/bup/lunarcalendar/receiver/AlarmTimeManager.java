@@ -63,14 +63,14 @@ public class AlarmTimeManager {
 
     public void cancelAlarm(FavoriteEntity object)
     {
-        deleteAlarm(Long.toString(object.getInsertDate().getTime()));
+        deleteAlarm(Long.toString(object.getInsertDate().getTime()).substring(4));
 
         alarmList.remove(object);
     }
 
     public boolean checkAlarm(FavoriteEntity object)
     {
-        if (existAlarm(Long.toString(object.getInsertDate().getTime()))) {
+        if (existAlarm(Long.toString(object.getInsertDate().getTime()).substring(4))) {
             return true;
         }
 
@@ -126,7 +126,17 @@ public class AlarmTimeManager {
         PendingIntent sender = PendingIntent.getBroadcast(_context, intent_id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if(isRepeat)
-            mManager.setRepeating(AlarmManager.RTC_WAKEUP, when, AlarmManager.INTERVAL_DAY, sender);
+        {
+            long interval = 0;
+//			if(CommUtils.chkYun(2001))
+//				interval = 366 * 24 * 60 * 60 * 1000;	// 윤년
+//			else
+//				interval = 365 * 24 * 60 * 60 * 1000;
+
+            interval = 30 * 1000;	// 30초마다 반복 테스트
+
+            mManager.setRepeating(AlarmManager.RTC_WAKEUP, when, interval, sender);
+        }
         else
             mManager.set(AlarmManager.RTC_WAKEUP, when, sender);
     }

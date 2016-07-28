@@ -2,8 +2,6 @@ package ys.bup.lunarcalendar;
 
 import android.content.Context;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import io.realm.Realm;
@@ -19,12 +17,10 @@ public class AppModule {
 
 		RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(application).deleteRealmIfMigrationNeeded().build();
 		Realm.setDefaultConfiguration(realmConfiguration);
-
 	}
 
 	@Provides
-	@Singleton
-	Context provideApplicationContext() {
+	Context providesApplicationContext() {
 		return application;
 	}
 }

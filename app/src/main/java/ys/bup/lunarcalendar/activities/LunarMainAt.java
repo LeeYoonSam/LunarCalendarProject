@@ -10,7 +10,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.RealmResults;
 import io.realm.Sort;
-import ys.bup.lunarcalendar.LunarCalendarApplication;
 import ys.bup.lunarcalendar.R;
 import ys.bup.lunarcalendar.adapter.FavoriteAdapter;
 import ys.bup.lunarcalendar.entity.FavoriteEntity;
@@ -34,9 +33,6 @@ public class LunarMainAt extends BaseLoadingActivity {
         setContentView(R.layout.at_lunar_main);
 
         ButterKnife.bind(this);
-        
-        // Perform injection so that when this call returns all dependencies will be available for use.
-	    ((LunarCalendarApplication) getApplication()).getApplicationComponent().inject(this);
 
         adapter = new FavoriteAdapter(alFavorite, LunarMainAt.this);
 

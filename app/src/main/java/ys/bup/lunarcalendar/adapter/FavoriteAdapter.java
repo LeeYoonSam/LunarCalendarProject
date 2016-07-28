@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikhaellopez.hfrecyclerview.HFRecyclerView;
 
@@ -17,8 +18,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ys.bup.lunarcalendar.R;
-import ys.bup.lunarcalendar.entity.FavoriteEntity;
 import ys.bup.lunarcalendar.activities.LunarSearchAt;
+import ys.bup.lunarcalendar.entity.FavoriteEntity;
+import ys.bup.lunarcalendar.receiver.AlarmTimeManager;
 
 /**
  * Created by ys on 2016. 7. 13..
@@ -95,10 +97,18 @@ public class FavoriteAdapter extends HFRecyclerView<FavoriteEntity> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            FavoriteEntity item = getItem(position);
+            final FavoriteEntity item = getItem(position);
 
             itemViewHolder.tvHeaderTitle.setText(item.getMemo());
             itemViewHolder.tvHeaderDate.setText(item.showSolarDate());
+
+            itemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new AlarmTimeManager(context).cancelAlarm(item);
+                    Toast.makeText(context, item.getMemo() + " 알람취소", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         } else if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder hHolder = (HeaderViewHolder) holder;

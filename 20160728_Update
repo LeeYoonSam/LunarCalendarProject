@@ -13,6 +13,11 @@ public boolean checkAlarm(FavoriteEntity object) {
 	return false;
 }
 
+saveAlarm메서드에 if(isRepeat)안에 추가하기
+//			long interval = 365 * 24 * 60 * 60 * 1000;	// 매년 (윤년이 끼면 맞지 않을수 있으므로 처리를 다시 해야한다.)
+			long interval = 30 * 1000;	// 30초마다 반복 테스트
+
+
 // 알람 취소시
 AlarmTimeManager.getInstance(LunarMainAt.this).cancelAlarm(CommUtils.alFavorite.get(position));
 

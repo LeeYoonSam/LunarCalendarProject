@@ -19,13 +19,8 @@ public class AlarmManagerModule {
         this.context = context;
     }
 
- @Provides
-    @ActivityScope
-    MainInteractor provideMainInteractor(MainInteractorImpl interactor) {
-        return interactor;
-    }
     @Provides
-    AlarmControl providesAlarmControl() {
-        return new AlarmTimeManager();
+    AlarmControl providesAlarmControl(AlarmTimeManager manager) {
+        return manager();
     }
 }

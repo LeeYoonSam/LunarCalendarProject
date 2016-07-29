@@ -13,20 +13,19 @@ import ys.bup.lunarcalendar.common.AlarmControl;
 @Module
 public class AlarmManagerModule {
 
-    AlarmControl alarmControl;
     Context context;
 
-    public AlarmManagerModule(Context context, AlarmControl alarmControl) {
+    public AlarmManagerModule(Context context) {
         this.context = context;
     }
 
-    @Provides
-    AlarmManager providesAlarmManager(Context context) {
-        return (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+ @Provides
+    @ActivityScope
+    MainInteractor provideMainInteractor(MainInteractorImpl interactor) {
+        return interactor;
     }
-
     @Provides
     AlarmControl providesAlarmControl() {
-        return alarmControl;
+        return new AlarmTimeManager();
     }
 }

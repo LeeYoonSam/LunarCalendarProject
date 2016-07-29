@@ -23,4 +23,9 @@ public class AppModule {
 	Context providesApplicationContext() {
 		return application;
 	}
+
+
+//	AlarmManager providesAlarmManager() {
+//		return (AlarmManager)application.getSystemService(Context.ALARM_SERVICE);
+//	}
 }

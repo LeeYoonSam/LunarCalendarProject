@@ -2,6 +2,7 @@ package ys.bup.lunarcalendar;
 
 import android.app.Application;
 
+import ys.bup.lunarcalendar.di.component.AppComponent;
 import ys.bup.lunarcalendar.di.component.DaggerAppComponent;
 
 /**
@@ -9,12 +10,20 @@ import ys.bup.lunarcalendar.di.component.DaggerAppComponent;
  */
 public class LunarCalendarApplication extends Application {
 
+	AppComponent appComponent;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
-		DaggerAppComponent.builder()
+		appComponent = DaggerAppComponent.builder()
 				.appModule(new AppModule(this))
-				.build().inject(this);
+				.build();
+
+		appComponent.inject(this);
+	}
+
+	public AppComponent getAppComponent() {
+		return appComponent;
 	}
 }

@@ -26,6 +26,7 @@ public class AlarmTimeManager {
 
     // constructor
     public AlarmTimeManager(Context context) {
+
         mManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         this._context = context;
     }

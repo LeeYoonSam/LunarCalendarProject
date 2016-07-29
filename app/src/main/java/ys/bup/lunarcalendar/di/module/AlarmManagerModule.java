@@ -3,24 +3,24 @@ package ys.bup.lunarcalendar.di.module;
 import android.app.AlarmManager;
 import android.content.Context;
 
+import javax.inject.Inject;
+
 import dagger.Module;
 import dagger.Provides;
-import ys.bup.lunarcalendar.common.AlarmControl;
+import ys.bup.lunarcalendar.AppModule;
+import ys.bup.lunarcalendar.LunarCalendarApplication;
 
 /**
  * Created by ys on 2016. 7. 28..
  */
-@Module
+@Module (includes = AppModule.class)
 public class AlarmManagerModule {
 
-    Context context;
-
-    public AlarmManagerModule(Context context) {
-        this.context = context;
-    }
+    @Inject
+    LunarCalendarApplication application;
 
     @Provides
-    AlarmControl providesAlarmControl(AlarmTimeManager manager) {
-        return manager;
+    AlarmManager providesAlarmManager() {
+        return (AlarmManager)application.getSystemService(Context.ALARM_SERVICE);
     }
 }

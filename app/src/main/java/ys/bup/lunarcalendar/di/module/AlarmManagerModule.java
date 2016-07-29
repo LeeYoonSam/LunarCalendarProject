@@ -21,6 +21,6 @@ public class AlarmManagerModule {
 
     @Provides
     AlarmControl providesAlarmControl(AlarmTimeManager manager) {
-        return manager();
+        return manager;
     }
 }

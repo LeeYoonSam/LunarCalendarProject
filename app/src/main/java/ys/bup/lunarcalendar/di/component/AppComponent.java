@@ -13,14 +13,7 @@ import ys.bup.lunarcalendar.activities.LunarSearchAt;
 @Component(modules = { AppModule.class } )
 public interface AppComponent {
     void inject(LunarCalendarApplication application);
-    void inject(LunarSearchAt lunarSearchAt);
-
-    Context providesApplicationContext();
-
-
-//    void inject(AlarmTimeManager alarmTimeManager);
-//
-//    AlarmManager alarmManager();
+	void inject(AlarmTimeManager alarmTimeManager);
 }
 
 

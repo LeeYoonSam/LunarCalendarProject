@@ -15,5 +15,3 @@ public interface AppComponent {
     void inject(LunarCalendarApplication application);
 	void inject(AlarmTimeManager alarmTimeManager);
 }
-
-

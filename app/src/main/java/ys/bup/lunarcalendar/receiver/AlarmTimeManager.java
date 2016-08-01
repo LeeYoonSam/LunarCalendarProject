@@ -20,6 +20,7 @@ import ys.bup.lunarcalendar.entity.FavoriteEntity;
 public class AlarmTimeManager {
     private ArrayList<FavoriteEntity> alarmList = new ArrayList<FavoriteEntity>();
 
+    @Inject
     private AlarmManager mManager;
 
     private Context _context;
@@ -27,7 +28,10 @@ public class AlarmTimeManager {
     // constructor
     public AlarmTimeManager(Context context) {
 
-        mManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+//        mManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+
+        LunarCalendarApplication.getAppComponent().inject(this);
+
         this._context = context;
     }
 //

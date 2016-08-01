@@ -20,12 +20,14 @@ public class AppModule {
 	}
 
 	@Provides
+	@Singleton
 	Context providesApplicationContext() {
 		return application;
 	}
-
-
-//	AlarmManager providesAlarmManager() {
-//		return (AlarmManager)application.getSystemService(Context.ALARM_SERVICE);
-//	}
+	
+	@Provides
+	@Singleton
+    AlarmManager providesRealmConfiguration() {
+        return (AlarmManager)application.getSystemService(Context.ALARM_SERVICE);
+    }
 }

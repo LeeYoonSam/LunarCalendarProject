@@ -1,8 +1,7 @@
 package ys.bup.lunarcalendar;
 
+import android.app.AlarmManager;
 import android.content.Context;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -19,12 +18,16 @@ public class AppModule {
 
 		RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(application).deleteRealmIfMigrationNeeded().build();
 		Realm.setDefaultConfiguration(realmConfiguration);
-
 	}
 
 	@Provides
-	@Singleton
 	Context provideApplicationContext() {
 		return application;
+	}
+
+	@Provides
+	AlarmManager provideAlarmManager() {
+		return (AlarmManager) application.getSystemService(Context.ALARM_SERVICE);
+
 	}
 }

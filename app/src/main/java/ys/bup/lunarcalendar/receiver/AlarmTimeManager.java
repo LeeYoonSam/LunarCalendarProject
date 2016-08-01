@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ys.bup.lunarcalendar.LunarCalendarApplication;
 import ys.bup.lunarcalendar.entity.FavoriteEntity;
 
 /**
@@ -20,26 +22,19 @@ import ys.bup.lunarcalendar.entity.FavoriteEntity;
 public class AlarmTimeManager {
     private ArrayList<FavoriteEntity> alarmList = new ArrayList<FavoriteEntity>();
 
-    private AlarmManager mManager;
+    @Inject
+    public AlarmManager mManager;
 
     private Context _context;
 
-    // constructor
     public AlarmTimeManager(Context context) {
-        mManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+
+        ((LunarCalendarApplication) context.getApplicationContext())
+                .getApplicationComponent()
+                .inject(this);
+
         this._context = context;
     }
-//
-//    public static AlarmTimeManager getInstance(Context context) {
-//        if( instance == null) {
-//            synchronized (AlarmTimeManager.class) {
-//                if(instance == null) {
-//                    instance = new AlarmTimeManager(context);
-//                }
-//            }
-//        }
-//        return instance;
-//    }
 
     // 앱 재부팅시 다시 등록하기
     public void restoreAlarm()

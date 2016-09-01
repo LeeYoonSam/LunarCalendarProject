@@ -1,7 +1,6 @@
 package ys.bup.lunarcalendar.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +17,6 @@ import ys.bup.lunarcalendar.adapter.FavoriteAdapter;
 import ys.bup.lunarcalendar.bus.RxBus;
 import ys.bup.lunarcalendar.common.CommUtils;
 import ys.bup.lunarcalendar.entity.FavoriteEntity;
-import ys.bup.lunarcalendar.image.CameraImageEXIF;
 import ys.bup.lunarcalendar.ui.DividerItemDecoration;
 
 /**
@@ -51,40 +49,7 @@ public class LunarMainAt extends BaseLoadingActivity {
         RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecoration(CommUtils.getDrawable(this, R.drawable.line_divider));
         lvFavorite.addItemDecoration(dividerItemDecoration);
 
-
-//        setRxbus();
-        new CameraImageTask().execute();
     }
-
-    public class CameraImageTask extends AsyncTask<Void, Void, CameraImageEXIF> {
-
-        @Override
-        protected CameraImageEXIF doInBackground(Void... params) {
-            return new CameraImageEXIF(LunarMainAt.this, rxBus, 2);
-        }
-
-        @Override
-        protected void onPostExecute(CameraImageEXIF cameraImageEXIF) {
-            super.onPostExecute(cameraImageEXIF);
-
-
-            cameraImageEXIF.getImageInfo();
-
-        }
-    };
-
-    public void setRxbus() {
-//        rxBus = RxBus.getInstance();
-//
-//        rxBus.register(, rxbusCallback);
-    }
-
-//    Action1 rxbusCallback = new Action1() {
-//        @Override
-//        public void call(Object o) {
-//
-//        }
-//    };
 
     @Override
     protected void onResume() {

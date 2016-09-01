@@ -3,6 +3,7 @@
 buildscript {
     repositories {
         jcenter()
+//        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
@@ -12,12 +13,16 @@ buildscript {
 
         // Dagger2
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+
+        // Retrolambda
+//        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+//        mavenCentral()
     }
 }
 

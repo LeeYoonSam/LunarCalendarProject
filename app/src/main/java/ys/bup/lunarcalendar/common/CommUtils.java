@@ -1,7 +1,10 @@
 package ys.bup.lunarcalendar.common;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -10,6 +13,7 @@ import com.ibm.icu.util.ChineseCalendar;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import ys.bup.lunarcalendar.entity.LunarSolarEntity;
 
@@ -87,6 +91,45 @@ public class CommUtils {
 		return ret.toString();
 	}
 
+
+	/**
+	 * Today's Lunar & Solar Date
+	 *
+	 * @return
+     */
+	public static HashMap<String, String> getTodayLunarSolar() {
+
+		HashMap<String, String> resultDate = new HashMap<>();
+
+		Calendar today = Calendar.getInstance();
+
+		// 양력 날짜
+		resultDate.put("solarDate", "양력 " + getDateByShowForamt(today.getTime()));
+
+
+		ChineseCalendar cc = new ChineseCalendar();
+		Calendar cal = Calendar.getInstance();
+
+		cal.set(Calendar.YEAR, today.get(Calendar.YEAR));
+		cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
+		cal.set(Calendar.DAY_OF_MONTH, today.get(Calendar.DAY_OF_MONTH));
+
+		cc.setTimeInMillis(cal.getTimeInMillis());
+
+		int y = cc.get(ChineseCalendar.EXTENDED_YEAR) - 2637;
+		int m = cc.get(ChineseCalendar.MONTH) + 1;
+		int d = cc.get(ChineseCalendar.DAY_OF_MONTH);
+
+		StringBuffer ret = new StringBuffer();
+		ret.append(String.format("%04d", y)).append(". ");
+		ret.append(String.format("%02d", m)).append(". ");
+		ret.append(String.format("%02d", d));
+
+		resultDate.put("lunarDate", "음력 " + ret.toString());
+
+
+		return resultDate;
+	}
 
 	/**
 	 * 음력날짜를 양력날짜로 변환
@@ -174,5 +217,24 @@ public class CommUtils {
 		InputMethodManager inputManager = (InputMethodManager) activity
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputManager.showSoftInput(view, 0);
+	}
+
+
+	public static int getColor(Context context, int id) {
+		final int version = Build.VERSION.SDK_INT;
+		if (version >= Build.VERSION_CODES.M) {
+			return context.getColor(id);
+		} else {
+			return context.getResources().getColor(id);
+		}
+	}
+
+	public static Drawable getDrawable(Context context, int id) {
+		final int version = Build.VERSION.SDK_INT;
+		if (version >= Build.VERSION_CODES.LOLLIPOP) {
+			return context.getDrawable(id);
+		} else {
+			return context.getResources().getDrawable(id);
+		}
 	}
 }

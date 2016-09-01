@@ -131,8 +131,6 @@ public class LunarSearchAt  extends BaseLoadingActivity {
 				}
 			}
 
-			realm.commitTransaction();
-
 			// 키보드 숨기기
 			CommUtils.hideSoftInput(LunarSearchAt.this, etMemo);
 
@@ -142,6 +140,9 @@ public class LunarSearchAt  extends BaseLoadingActivity {
 		} catch(Exception e) {
 			e.printStackTrace();
 			Toast.makeText(LunarSearchAt.this, "입력 실패!\n다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+		}
+		finally {
+			realm.commitTransaction();
 		}
 
 	}
@@ -160,7 +161,7 @@ public class LunarSearchAt  extends BaseLoadingActivity {
 		DialogDatePicker();
 	}
 
-	// 데이터 피커 다이얼로그
+	// 데이트 피커 다이얼로그
 	public void DialogDatePicker(){
 
 		DatePickerDialog.OnDateSetListener mDateSetListener =

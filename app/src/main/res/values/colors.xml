@@ -4,4 +4,18 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="blue_6799ff">#6799ff</color>
+
+    <color name="main_green1">#4ECC94</color>
+    <color name="subMain_green1">#30805C</color>
+
+    <color name="main_green2">#AAB558</color>
+    <color name="subMain_green2">#626933</color>
+
+
+    <color name="main_purple1">#A57CC2</color>
+    <color name="subMain_purple2">#644B75</color>
+
+    <color name="darkGray_333333">#333333</color>
+    <color name="gray_CCCCCC">#CCCCCC</color>
+
 </resources>

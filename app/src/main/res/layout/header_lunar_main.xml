@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:layout_height="213dp"
+    android:orientation="vertical"
+    android:background="@drawable/bg_stone">
 
     <RelativeLayout
         android:id="@+id/rlHeaderBg"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="#ff0000" >
+        android:layout_height="match_parent"
+        android:background="#1C1A16"
+        android:alpha="0.7">
 
         <View
             android:layout_width="match_parent"
@@ -23,18 +25,25 @@
             android:gravity="center" >
 
             <TextView
-                android:id="@+id/tvHeaderTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="insert Header"
+                android:text="@string/txt_today"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#ffffff" />
 
             <TextView
-                android:id="@+id/tvHeaderDate"
+                android:id="@+id/tvLunarDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="insert Date"
+                android:text="@string/txt_lunar"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:id="@+id/tvSolarDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_solar"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="#ffffff" />
         </LinearLayout>

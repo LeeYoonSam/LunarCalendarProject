@@ -1,94 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="#EAEAEA" >
-
-<Button
-    android:id="@+id/btSearchDate"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:background="#6799FF"
-    android:text="@string/txt_search_date"
-    android:textAppearance="?android:attr/textAppearanceMedium"
-    android:textColor="#EAEAEA" />
-
-<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@id/btSearchDate"
-    android:fillViewport="true" >
+    android:background="#EAEAEA" >
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:fillViewport="true" >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:padding="10dp" >
-
-            <TextView
-                android:id="@+id/tvConvertDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#6799FF" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/llEditArea"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="vertical"
-            android:padding="10dp" >
+            android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/llSubLunar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:background="#fff"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_date"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txt_title_lunar"
+                    android:textColor="@color/darkGray_333333"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginLeft="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llDateArea"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@id/llSubLunar"
+                android:orientation="vertical"
+                android:visibility="invisible">
+
+                <TextView
+                    android:id="@+id/tvConvertLunarDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="40dp"
+                    android:text="@string/txt_search_date"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#6799FF" />
+
+                <TextView
+                    android:id="@+id/tvConvertDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="40dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/darkGray_333333" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tvSearchDate"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:paddingLeft="40dp"
+                android:gravity="center_vertical"
+                android:text="@string/txt_hint_select_date"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorAccent"
+                android:layout_below="@id/llSubLunar"/>
+
+
+            <LinearLayout
+                android:id="@+id/llSubMemo"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:background="#fff"
+                android:gravity="center_vertical"
+                android:layout_below="@id/llDateArea">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_edit"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txt_title_memo"
+                    android:textColor="@color/darkGray_333333"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginLeft="10dp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llMemoArea"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:layout_below="@id/llSubMemo">
 
                 <EditText
                     android:id="@+id/etMemo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="40dp"
                     android:layout_weight="1"
                     android:hint="@string/txt_memo"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:visibility="gone" />
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
 
                 <ImageView
                     android:id="@+id/ivAlarm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/btn_alarm_on"
-                    android:visibility="gone" />
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_alarm_on"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"/>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llBottomArea"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="50dp"
                 android:gravity="center"
-                android:orientation="horizontal" >
-
-                <Button
-                    android:id="@+id/btAddFavorite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:background="#6799FF"
-                    android:text="@string/txt_add_date"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#EAEAEA"
-                    android:visibility="gone" />
+                android:orientation="horizontal"
+                android:layout_below="@id/llMemoArea"
+                android:visibility="gone">
 
                 <Button
                     android:id="@+id/btAddAlarm"
@@ -96,18 +147,125 @@ android:background="#EAEAEA" >
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="#6799FF"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:text="@string/txt_add_alarm"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#EAEAEA" />
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
-</ScrollView>
 
-<ys.bup.lunarcalendar.activities.AlarmAddOverlay
-    android:id="@+id/overlayAlarm"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:visibility="gone" />
+                <Button
+                    android:id="@+id/btAddFavorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:background="#6799FF"
+                    android:text="@string/txt_add_date"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#EAEAEA" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+
+
+    <!--<ScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_below="@id/btSearchDate"-->
+    <!--android:fillViewport="true" >-->
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" >-->
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:padding="10dp" >-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tvConvertDate"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center"-->
+    <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+    <!--android:textColor="#6799FF" />-->
+    <!--</RelativeLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/llEditArea"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:orientation="vertical"-->
+    <!--android:padding="10dp" >-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal" >-->
+
+    <!--<EditText-->
+    <!--android:id="@+id/etMemo"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:hint="@string/txt_memo"-->
+    <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+    <!--android:visibility="gone" />-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/ivAlarm"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:src="@drawable/ic_alarm_on"-->
+    <!--android:visibility="gone" />-->
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal" >-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btAddFavorite"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginRight="5dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="#6799FF"-->
+    <!--android:text="@string/txt_add_date"-->
+    <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+    <!--android:textColor="#EAEAEA"-->
+    <!--android:visibility="gone" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btAddAlarm"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="#6799FF"-->
+    <!--android:text="@string/txt_add_alarm"-->
+    <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+    <!--android:textColor="#EAEAEA" />-->
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+    <!--</RelativeLayout>-->
+    <!--</ScrollView>-->
+
+    <ys.bup.lunarcalendar.activities.AlarmAddOverlay
+        android:id="@+id/overlayAlarm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -1,9 +1,13 @@
 package ys.bup.lunarcalendar.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.mikhaellopez.hfrecyclerview.HFRecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,20 +27,29 @@ import butterknife.ButterKnife;
 import ys.bup.lunarcalendar.R;
 import ys.bup.lunarcalendar.common.CommUtils;
 import ys.bup.lunarcalendar.entity.FavoriteEntity;
+import ys.bup.lunarcalendar.helper.ItemTouchHelperAdapter;
+import ys.bup.lunarcalendar.helper.ItemTouchHelperViewHolder;
+import ys.bup.lunarcalendar.helper.OnStartDragListener;
 import ys.bup.lunarcalendar.image.CameraImageEXIF;
 
 /**
  * Created by ys on 2016. 7. 13..
  */
-public class FavoriteAdapter extends HFRecyclerView<FavoriteEntity> {
+public class FavoriteAdapter extends HFRecyclerView<FavoriteEntity> implements ItemTouchHelperAdapter {
 
     private Context context;
-    private List<FavoriteEntity> items = new ArrayList<>();
+    private final List<FavoriteEntity> items = new ArrayList<>();
 
-    public FavoriteAdapter(List<FavoriteEntity> data, Context context) {
+    private final OnStartDragListener mDragStartListener;
+
+    public FavoriteAdapter(Context context, List<FavoriteEntity> data, OnStartDragListener dragStartListener) {
         // With Header & With Footer
         super(data, true, false);
 
+        items.clear();
+        items.addAll(data);
+
+        mDragStartListener = dragStartListener;
         this.context = context;
     }
 
@@ -56,10 +70,35 @@ public class FavoriteAdapter extends HFRecyclerView<FavoriteEntity> {
 //        return new FooterViewHolder(inflater.inflate(R.layout.cell_lunar_add, parent, false));
         return null;
     }
+
+    @Override
+    public void onItemDismiss(int position) {
+        Log.d("ItemTouch onItemDismiss", "position: " + position);
+        items.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+
+        try {
+            Log.d("ItemTouch onItemMove", "fromPosition: " + fromPosition + " toPosition: " + toPosition);
+            Collections.swap(items, fromPosition, toPosition);
+            notifyItemMoved(fromPosition, toPosition);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return false;
+        }
+
+//        return true;
+    }
+
     //endregion
 
     //region ViewHolder Header and Footer
-    class ItemViewHolder extends RecyclerView.ViewHolder {
+    public class ItemViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
         @BindView(R.id.ivHeaderBg)
         ImageView ivHeaderBg;
 
@@ -74,6 +113,15 @@ public class FavoriteAdapter extends HFRecyclerView<FavoriteEntity> {
             ButterKnife.bind(this, itemView);
         }
 
+        @Override
+        public void onItemSelected() {
+            itemView.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(0);
+        }
     }
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {
@@ -104,7 +152,19 @@ public class FavoriteAdapter extends HFRecyclerView<FavoriteEntity> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
-            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+
+            // Start a drag whenever the handle view it touched
+            itemViewHolder.ivHeaderBg.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(final View v, MotionEvent event) {
+                    if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                        mDragStartListener.onStartDrag(itemViewHolder);
+                    }
+                    return false;
+                }
+            });
+
             FavoriteEntity item = getItem(position);
 
             int month = Integer.parseInt(item.showSolarDate().substring(6, 8));

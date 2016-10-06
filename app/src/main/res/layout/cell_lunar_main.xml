@@ -2,13 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp">
 
     <RelativeLayout
         android:id="@+id/rlHeaderBg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ff0000" >
+        android:background="@color/blue_6799ff" >
 
         <ImageView
             android:id="@+id/ivHeaderBg"
@@ -32,9 +35,12 @@
                 android:id="@+id/tvHeaderTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="insert Header"
+                android:text="insert Memo"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:gravity="center"/>
 
             <TextView
                 android:id="@+id/tvHeaderDate"

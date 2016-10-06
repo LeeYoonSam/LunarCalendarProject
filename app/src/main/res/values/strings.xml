@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">음력검색</string>
 
+    <string name="txt_close">닫기</string>
+
+    <string name="txt_title_lunar">기억하고 싶은 음력 날짜를 선택해주세요.</string>
+    <string name="txt_title_memo">이 날은 무슨 날인가요?</string>
+
     <string name="txt_memo">간단한 메모를 작성해주세요.</string>
     <string name="txt_search_date">음력 날짜입력</string>
 
@@ -11,11 +16,20 @@
     <string name="txt_hour">시</string>
     <string name="txt_minute">분</string>
 
-    <string name="txt_add_date">날짜추가</string>
+    <string name="txt_add_date">기억하기</string>
     <string name="txt_add_alarm">알람추가</string>
 
     <string name="txt_today">오늘은</string>
     <string name="txt_lunar">음력</string>
     <string name="txt_solar">양력</string>
+
+    <string name="txt_add_favorite">기억하고 싶은 음력 날짜를 처음으로 등록해보세요.</string>
+
+    <string name="txt_hint_select_date">음력 날짜를 입력해주세요.</string>
+
+    <string name="txt_error_insert">기억하기 싫은 날인지 등록하지 못했습니다.\n다시 시도해주세요.</string>
+
+    <string name="txt_noti_on_alarm">중요한 날은 알림까지 받아야죠!\n알람 설정을 하겠습니다.</string>
+    <string name="txt_noti_off_alarm">알림까지는 받기 싫으시죠?\n알람 설정을 취소 하겠습니다.</string>
 
 </resources>

@@ -1,12 +1,19 @@
 package ys.bup.lunarcalendar.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 import ys.bup.lunarcalendar.common.CommUtils;
 
-public class FavoriteEntity extends RealmObject {
+public class FavoriteEntity extends RealmObject implements Parcelable {
+
+	@PrimaryKey
+	private int seq;
 
 	private Date insertDate;
 
@@ -35,6 +42,14 @@ public class FavoriteEntity extends RealmObject {
 
 		this.isAlarmOn = false;
 		this.isAlarmRepeat = false;
+	}
+
+	public int getSeq() {
+		return seq;
+	}
+
+	public void setSeq(int seq) {
+		this.seq = seq;
 	}
 
 	public Date getInsertDate() {
@@ -102,5 +117,45 @@ public class FavoriteEntity extends RealmObject {
 
 	public void setAlarmRepeat(boolean isAlarmRepeat) {
 		this.isAlarmRepeat = isAlarmRepeat;
+	}
+
+	protected FavoriteEntity(Parcel in) {
+		seq = in.readInt();;
+		memo = in.readString();
+		solarDate = in.readString();
+		lunarDate = in.readString();
+		alarmHour = in.readInt();
+		alarmMinute = in.readInt();
+		isAlarmOn = in.readByte() != 0;
+		isAlarmRepeat = in.readByte() != 0;
+	}
+
+	public static final Creator<FavoriteEntity> CREATOR = new Creator<FavoriteEntity>() {
+		@Override
+		public FavoriteEntity createFromParcel(Parcel in) {
+			return new FavoriteEntity(in);
+		}
+
+		@Override
+		public FavoriteEntity[] newArray(int size) {
+			return new FavoriteEntity[size];
+		}
+	};
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(seq);
+		dest.writeString(memo);
+		dest.writeString(solarDate);
+		dest.writeString(lunarDate);
+		dest.writeInt(alarmHour);
+		dest.writeInt(alarmMinute);
+		dest.writeByte((byte) (isAlarmOn ? 1 : 0));
+		dest.writeByte((byte) (isAlarmRepeat ? 1 : 0));
 	}
 }

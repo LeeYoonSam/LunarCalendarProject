@@ -2,18 +2,103 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
-    <android.support.v7.widget.RecyclerView
+
+    <RelativeLayout
+        android:id="@+id/rlHeaderTop"
+        android:layout_width="match_parent"
+        android:layout_height="213dp"
+        android:orientation="vertical"
+        android:background="@drawable/bg_stone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="213dp"
+            android:background="#1C1A16"
+            android:alpha="0.7">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#15151530" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:gravity="center" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_today"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:id="@+id/tvLunarDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_lunar"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:id="@+id/tvSolarDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_solar"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/ibSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:src="@drawable/ic_setting"
+            android:padding="5dp"/>
+
+    </RelativeLayout>
+
+    <ys.bup.lunarcalendar.ui.EmptyLunarDateView
         android:id="@+id/lvFavorite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:cacheColorHint="#00000000"/>
+        android:layout_below="@id/rlHeaderTop"
+        android:paddingBottom="10dp"/>
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/lvFavorite"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:cacheColorHint="#00000000"-->
+        <!--android:layout_below="@id/rlHeaderBg"/>-->
+
+    <include
+        android:id="@+id/layEmpty"
+        layout="@layout/empty_lunar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rlHeaderTop"/>
+
+
+    <ys.bup.lunarcalendar.ui.OverlayFavoriteDetail
+        android:id="@+id/overlayFavorite"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
 
     <ImageButton
         android:id="@+id/ibAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/btn_plus"
+        android:src="@drawable/ic_note_add"
         android:background="@null"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"

@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
-import android.support.annotation.IntRange;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -20,9 +19,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ys.bup.lunarcalendar.R;
+import ys.bup.lunarcalendar.entity.AlarmEntity;
 
 
-public class AlarmAddOverlay extends FrameLayout {
+public class AlarmAddOverlay extends RelativeLayout {
 
 	@BindView(R.id.tvHour)
 	TextView tvHour;
@@ -36,10 +36,10 @@ public class AlarmAddOverlay extends FrameLayout {
 	Activity parentAt;
 
 	private AlarmAddListener parentListener;
-	private AlarmObject params = new AlarmObject();
+	private AlarmEntity params = new AlarmEntity();
 
 	public interface AlarmAddListener {
-		public void clickAdd(AlarmObject alarm);
+		public void clickAdd(AlarmEntity alarm);
 	}
 
 	public void setAddAlarmListener(AlarmAddListener listener, Activity act) {
@@ -56,6 +56,14 @@ public class AlarmAddOverlay extends FrameLayout {
 		ButterKnife.bind(this, view);
 	}
 
+	public void setAlarmEntity(AlarmEntity alarm) {
+		params = alarm;
+
+        if(params.getHour() != 999 && params.getMinute() != 999) {
+            tvHour.setText(Integer.toString(params.getHour()));
+            tvMinute.setText(Integer.toString(params.getMinute()));
+        }
+	}
 
 	@OnClick({R.id.tvHour, R.id.tvMinute})
 	public void onClickShowPicker() {
@@ -64,7 +72,7 @@ public class AlarmAddOverlay extends FrameLayout {
 
 	@OnClick(R.id.btAlarmAdd)
 	public void onClickAddAlarm() {
-		if(params.hour == 999 || params.minute == 999) {
+		if(params.getHour() == 999 || params.getMinute() == 999) {
 			Toast.makeText(this.getContext(), "시간을 선택 주세요.", Toast.LENGTH_SHORT).show();
 			return;
 		}
@@ -97,7 +105,7 @@ public class AlarmAddOverlay extends FrameLayout {
 		int hour;
 		int min;
 
-		if(params.hour == 999 || params.minute == 999)
+		if(params.getHour() == 999 || params.getMinute() == 999)
 		{
 			Calendar c = Calendar.getInstance();
 
@@ -106,8 +114,8 @@ public class AlarmAddOverlay extends FrameLayout {
 		}
 		else
 		{
-			hour = params.hour;
-			min = params.minute;
+			hour = params.getHour();
+			min = params.getMinute();
 		}
 
 		TimePickerDialog tPicker = new TimePickerDialog(getContext(), tCallBack, hour, min, true);
@@ -116,41 +124,41 @@ public class AlarmAddOverlay extends FrameLayout {
 
 
 
-	// 알람 객체
-	public class AlarmObject implements Comparable<AlarmObject>
-	{
-		int hour;
-		int minute;
-
-		public AlarmObject() {
-			this.hour = 999;
-			this.minute = 999;
-		}
-
-		public AlarmObject(@IntRange(from=0, to=23) int hour, @IntRange(from=0, to=59) int minute) {
-			this.hour = hour;
-			this.minute = minute;
-		}
-
-		public int getHour() {
-			return hour;
-		}
-
-		public void setHour(int hour) {
-			this.hour = hour;
-		}
-
-		public int getMinute() {
-			return minute;
-		}
-
-		public void setMinute(int minute) {
-			this.minute = minute;
-		}
-
-		@Override
-		public int compareTo(AlarmObject t) {
-			return (this.hour - t.hour)*3600 + (this.minute - t.minute)*60;
-		}
-	}
+//	// 알람 객체
+//	public class AlarmObject implements Comparable<AlarmObject>
+//	{
+//		int hour;
+//		int minute;
+//
+//		public AlarmObject() {
+//			this.hour = 999;
+//			this.minute = 999;
+//		}
+//
+//		public AlarmObject(@IntRange(from=0, to=23) int hour, @IntRange(from=0, to=59) int minute) {
+//			this.hour = hour;
+//			this.minute = minute;
+//		}
+//
+//		public int getHour() {
+//			return hour;
+//		}
+//
+//		public void setHour(int hour) {
+//			this.hour = hour;
+//		}
+//
+//		public int getMinute() {
+//			return minute;
+//		}
+//
+//		public void setMinute(int minute) {
+//			this.minute = minute;
+//		}
+//
+//		@Override
+//		public int compareTo(AlarmObject t) {
+//			return (this.hour - t.hour)*3600 + (this.minute - t.minute)*60;
+//		}
+//	}
 }

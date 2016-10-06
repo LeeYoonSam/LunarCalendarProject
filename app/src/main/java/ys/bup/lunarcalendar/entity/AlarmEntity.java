@@ -10,13 +10,9 @@ public class AlarmEntity implements Comparable<AlarmEntity>
     int hour;
     int minute;
 
-    boolean isRepeat;
-
     public AlarmEntity() {
         this.hour = 999;
         this.minute = 999;
-
-        this.isRepeat = false;
     }
 
     public AlarmEntity(@IntRange(from=0, to=23) int hour, @IntRange(from=0, to=59) int minute) {
@@ -38,14 +34,6 @@ public class AlarmEntity implements Comparable<AlarmEntity>
 
     public void setMinute(int minute) {
         this.minute = minute;
-    }
-
-    public boolean isRepeat() {
-        return isRepeat;
-    }
-
-    public void setRepeat(boolean isRepeat) {
-        this.isRepeat = isRepeat;
     }
 
     @Override
